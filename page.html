@@ -1,25 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Environment Dashboard</title>
+    <style>
+table {
+    border-collapse: collapse;
+    width: 50%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
 </head>
+<body>
 
-<center> <font size="5"> <b>Environment Dashboard</b></font></center>
+<h2>Environments</h2>
 
-<p></p>
-<p></p>
-
-<center>
-<table border="2" style="width:30%">
+<table>
     <tr>
-        <th bgcolor = gray>Environment</th>
-        <th bgcolor = gray>Revision</th>
-    </tr>
-    <tr>
-        <td>Baseline</td>
-        <td>20673</td>
-    </tr>
+        <th>Environment</th>
+        <th>Revision</th>
+    </tr>  <tr>
+    <td>Baseline</td>
+    <td>20673</td>
+</tr>
     <tr>
         <td>GAT</td>
         <td>20658</td>
@@ -41,6 +53,6 @@
         <td>20644</td>
     </tr>
 </table>
-</center>
 
+</body>
 </html>
