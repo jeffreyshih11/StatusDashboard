@@ -1,59 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-table {
-    border-style: solid;
-    border-color: #FFCC00;
-    width: 50%;
-}
-
-th, td {
-    text-align: left;
-    padding: 8px;
-}
-
-tr:nth-child(even){background-color: #f2f2f2}
-
-th {
-    background-color: #0033FF;
-    color: white;
-}
-</style>
+    <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
 
-<h2>iWorks Corporation</h2>
+<div
+        style="
+      top: 99;
+      left: 99;
+      position: absolute;
+      z-index: 1;
+      visibility: show;">
+    <left><input type="button" value="Refresh Page" onClick="window.location.reload()"></left>
+</div>
 
-<table>
-    <tr>
-        <th>Environment</th>
-        <th>Revision</th>
-    </tr>  <tr>
-    <td>Baseline</td>
-    <td>20673</td>
-</tr>
-    <tr>
-        <td>GAT</td>
-        <td>20658</td>
-    </tr>
-    <tr>
-        <td>DEMO</td>
-        <td>20658</td>
-    </tr>
-    <tr>
-        <td>UAT</td>
+<center><h2>DISS PROJECT ENVIRONMENTS</h2>
+
+    <table>
+        <tr>
+            <th>Environment</th>
+            <th>Revision</th>
+            <th>Builder</th>
+            <th>Date</th>
+            <th>Hudson Status</th>
+        </tr>  <tr>
+        <td>Baseline</td>
         <td>20673</td>
+        <td>N/A</td>
+        <td>N/A 00:00</td>
+        <td>up</td>
     </tr>
-    <tr>
-        <td>QA</td>
-        <td>20673</td>
-    </tr>
-    <tr>
-        <td>DEV</td>
-        <td>20644</td>
-    </tr>
-</table>
+        <tr>
+            <td>DEMO</td>
+            <td>20658</td>
+            <td>Jermaine</td>
+            <td>04/04/16 00:00</td>
+            <td>up</td>
+        </tr>
+        <tr>
+            <td>DEV</td>
+            <td>20644</td>
+            <td>N/A</td>
+            <td>N/A 00:00</td>
+            <td>up</td>
+
+        </tr>
+        <tr>
+            <td>GAT</td>
+            <td>20658</td>
+            <td>Kentan</td>
+            <td>11/19/15 00:00</td>
+            <td>up</td>
+        </tr>
+        <tr>
+            <td>QA</td>
+            <td>20673</td>
+            <td>Jeremy</td>
+            <td>04/13/16 00:00</td>
+            <td>up</td>
+        </tr>
+        <tr>
+            <td>UAT</td>
+            <td>20673</td>
+            <td>Jermaine</td>
+            <td>04/12/16 00:00</td>
+            <td>up</td>
+        </tr>
+    </table>
+</center>
+
+<p></p>
+<p></p>
+
+
+
+<p></p>
+<p></p>
+
+<center><img src="img/logo.jpg" alt="logo" >
+
+    <p></p>
+    <p></p>
+
+    <hr color="#ff7302" width="80%">
 
 </body>
 </html>
