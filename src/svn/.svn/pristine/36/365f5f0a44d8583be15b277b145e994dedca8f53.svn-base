@@ -1,0 +1,79 @@
+# DO NOT CHANGE CONFIG PROPERTIES. IF YOU NEED TO CHNAGE IT LOCALLY THEN DONT CHECK IT INTO SVN.
+
+#DEV 
+#Environment=DEV
+#CP_Url=http://iwcxctsapp01.hq.iworkscorp.com:7003/diss-jvs-ui/faces/consent.jsp
+#CP_Url1=http://iwcxctsapp01.hq.iworkscorp.com:7003/diss-jvs-ui/faces/logoff
+#CATS_Url=http://iwcxctsapp02.hq.iworkscorp.com:7004/diss-cats-ui/faces/consent.jsp
+#CATS_Url1=http://iwcxctsapp02.hq.iworkscorp.com:7004/diss-cats-ui/faces/logoff
+#REPORTS_Url1=http://iwcxctsapp01.hq.iworkscorp.com:7003/diss-reporting-ui/faces/logoff
+
+#QA HostName URLs
+#CP_Url=http://iwcxctsapp03.hq.iworkscorp.com:7003/diss-jvs-ui/faces/consent.jsp
+#CATS_Url=http://iwcxctsapp04.hq.iworkscorp.com:7004/diss-cats-ui/faces/consent.jsp
+#CATS_Url1=http://iwcxctsapp04.hq.iworkscorp.com:7004/diss-cats-ui/faces/logoff
+
+#QA IP URLs
+#Environment=QA
+#CP_Url=http://10.1.10.213:7003/diss-jvs-ui/faces/consent.jsp
+#CP_Url1=http://10.1.10.213:7003/diss-jvs-ui/faces/logoff
+#CATS_Url=http://10.1.10.214:7004/diss-cats-ui/faces/consent.jsp
+#CATS_Url1=http://10.1.10.214:7004/diss-cats-ui/faces/logoff
+#REPORTS_Url1=http://10.1.10.213:7003/diss-reporting-ui/faces/logoff
+
+
+#GAT IP URLs
+#Environment=GAT
+#CP_Url=http://192.168.55.177:7003/diss-jvs-ui/faces/consent.jsp
+#CP_Url1=http://192.168.55.177:7003/diss-jvs-ui/faces/logoff
+#CATS_Url=http://192.168.55.179:7003/diss-cats-ui/faces/consent.jsp
+#CATS_Url1=http://192.168.55.179:7003/diss-cats-ui/faces/logoff
+#REPORTS_Url1=http://192.168.55.177:7003/diss-reporting-ui/faces/logoff
+
+
+#Local 
+#Environment=LOCAL
+#CP_Url=http://localhost:7001/diss-jvs-ui/faces/consent.jsp
+#CP_Url1=http://localhost:7001/diss-jvs-ui/faces/logoff
+#CATS_Url=http://localhost:7001/diss-cats-ui/faces/consent.jsp
+#CATS_Url1=http://localhost:7001/diss-cats-ui/faces/logoff
+#REPORTS_Url1=http://localhost:7001/diss-reporting-ui/faces/logoff
+
+#Baseline 
+Environment=BASELINE
+CP_Url=http://192.168.55.152:7001/diss-jvs-ui/faces/consent.jsp
+CP_Url1=http://192.168.55.152:7001/diss-jvs-ui/faces/logoff
+CATS_Url=http://192.168.55.154:7001/diss-cats-ui/faces/consent.jsp
+CATS_Url1=http://192.168.55.154:7001/diss-cats-ui/faces/logoff
+REPORTS_Url1=http://192.168.55.152:7001/diss-reporting-ui/faces/logoff
+
+#DEMO 
+#Environment=DEMO
+#CP_Url=http://10.1.10.215:7003/diss-jvs-ui/faces/consent.jsp
+#CP_Url1=http://10.1.10.215:7003/diss-jvs-ui/faces/logoff
+#CATS_Url=http://10.1.10.216:7004/diss-cats-ui/faces/consent.jsp
+#CATS_Url1=http://10.1.10.216:7004/diss-cats-ui/faces/logoff
+#REPORTS_Url1=http://10.1.10.215:7003/diss-reporting-ui/faces/logoff
+
+
+#UAT IP URLs
+#Environment=UAT
+#CATS_Url=http://192.168.55.102:7004/diss-cats-ui/faces/consent.jsp
+#CP_Url=http://192.168.55.101:7003/diss-jvs-ui/faces/consent.jsp
+#CP_Url1=http://192.168.55.101:7003/diss-jvs-ui/faces/logoff
+#CATS_Url1=http://192.168.55.102:7004/diss-cats-ui/faces/logoff
+#REPORTS_Url1=http://192.168.55.101:7003/diss-reporting-ui/faces/logoff
+
+#UAT Hostname URLs
+#CATS_Url=http://iwcxctsapp09.hq.iworkscorp.com:7004/diss-cats-ui/faces/consent.jsp
+#CP_Url=http://iwcxctsapp08.hq.iworkscorp.com:7003/diss-jvs-ui/faces/consent.jsp
+#CATS_Url1=http://iwcxctsapp09.hq.iworkscorp.com:7004/diss-cats-ui/faces/logoff
+
+#Report_URL=http://192.168.55.107:7001/diss-reporting-ui/faces/consent.jsp
+#Test_Url=http://192.168.53.46:7001/diss-cats-ui/faces/consent.jsp
+
+# Browsers to Test (IE, FireFox, Chrome)
+browser=IE
+#browser=Firefox
+#browser=Chrome
+
