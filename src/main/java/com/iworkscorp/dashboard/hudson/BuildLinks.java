@@ -25,22 +25,22 @@ public class BuildLinks {
 
     private static String[][] All_BuildTags = {BaseLine_BuildTags, DEMO_BuildTags, DEV_BuildTags, GAT_BuildTags, QA_BuildTags, UAT_BuildTags};
 
-    static ArrayList<String> BaseLineBuilds = new ArrayList<String>();
-    static ArrayList<String> DemoBuilds = new ArrayList<String>();
-    static ArrayList<String> DevBuilds = new ArrayList<String>();
-    static ArrayList<String> GATBuilds = new ArrayList<String>();
-    static ArrayList<String> QABuilds = new ArrayList<String>();
-    static ArrayList<String> UATBuilds = new ArrayList<String>();
+    static ArrayList<String> BaseLineBuildLinks = new ArrayList<String>();
+    static ArrayList<String> DemoBuildLinks = new ArrayList<String>();
+    static ArrayList<String> DevBuildLinks = new ArrayList<String>();
+    static ArrayList<String> GATBuildLinks = new ArrayList<String>();
+    static ArrayList<String> QABuildLinks = new ArrayList<String>();
+    static ArrayList<String> UATBuildLinks = new ArrayList<String>();
 
     static ArrayList<ArrayList<String>> All_Links_Array = new ArrayList<ArrayList<String>>();
 
     public static void populate_ALL_Links_Array(){
-        All_Links_Array.add(BaseLineBuilds);
-        All_Links_Array.add(DemoBuilds);
-        All_Links_Array.add(DevBuilds);
-        All_Links_Array.add(GATBuilds);
-        All_Links_Array.add(QABuilds);
-        All_Links_Array.add(UATBuilds);
+        All_Links_Array.add(BaseLineBuildLinks);
+        All_Links_Array.add(DemoBuildLinks);
+        All_Links_Array.add(DevBuildLinks);
+        All_Links_Array.add(GATBuildLinks);
+        All_Links_Array.add(QABuildLinks);
+        All_Links_Array.add(UATBuildLinks);
 
     }
 
@@ -88,22 +88,22 @@ public class BuildLinks {
     public static void main(String args[]){
         populate_ALL_Links_Array();
         makeBuildLinks();
-        for(String s: BaseLineBuilds){
+        for(String s: BaseLineBuildLinks){
             System.out.println(s);
         }
-        for(String s: DemoBuilds){
+        for(String s: DemoBuildLinks){
             System.out.println(s);
         }
-        for(String s: DevBuilds){
+        for(String s: DevBuildLinks){
             System.out.println(s);
         }
-        for(String s: GATBuilds){
+        for(String s: GATBuildLinks){
             System.out.println(s);
         }
-        for(String s: QABuilds){
+        for(String s: QABuildLinks){
             System.out.println(s);
         }
-        for(String s: UATBuilds){
+        for(String s: UATBuildLinks){
             System.out.println(s);
         }
     }

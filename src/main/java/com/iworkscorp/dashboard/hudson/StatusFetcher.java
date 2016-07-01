@@ -15,6 +15,12 @@ public class StatusFetcher {
 
     String username = "avillaflor";
     String password = "avillaflor";
+    ArrayList<Build> baselineBuilds = new ArrayList<Build>();
+    ArrayList<Build> demoBuilds = new ArrayList<Build>();
+    ArrayList<Build> devBuilds = new ArrayList<Build>();
+    ArrayList<Build> gatBuilds = new ArrayList<Build>();
+    ArrayList<Build> qaBuilds = new ArrayList<Build>();
+    ArrayList<Build> uatBuilds = new ArrayList<Build>();
 
     public void logIn(){
         driver.navigate().to(BuildLinks.getBaseURL() + "login?from=%2Fhudson");
@@ -37,62 +43,21 @@ public class StatusFetcher {
 
         Build mostRecentBaseLineBuild = findMostRecent(baselineBuilds);*/
 
-        ArrayList<Build> demoBuilds = new ArrayList<Build>();
-        Build DEMO_tag_1 = new Build("https://office.iworkscorp.com/hudson/view/DEMO/job/App_build_and_deploy_demo_build_tag_1/lastSuccessfulBuild/api/json");
-        demoBuilds.add(DEMO_tag_1);
-        Build DEMO_tag_2 = new Build("https://office.iworkscorp.com/hudson/view/DEMO/job/App_build_and_deploy_demo_build_tag_2/lastSuccessfulBuild/api/json");
-        demoBuilds.add(DEMO_tag_2);
-        Build DEMO_tag_3 = new Build("https://office.iworkscorp.com/hudson/view/DEMO/job/App_build_and_deploy_demo_build_tag_3/lastSuccessfulBuild/api/json");
-        demoBuilds.add(DEMO_tag_3);
+        //ArrayList<Build> demoBuilds = new ArrayList<Build>();
+
+
+        BuildLinks.populate_ALL_Links_Array();
+        BuildLinks.makeBuildLinks();
+        createAllBuilds();
 
         Build mostRecentDemoBuild = findMostRecent(demoBuilds);
-
-
-        ArrayList<Build> devList = new ArrayList<Build>();
-        Build DEV_automation = new Build("https://office.iworkscorp.com/hudson/view/DEV/job/App_build_and_deploy_dev_automation/lastSuccessfulBuild/api/json");
-        devList.add(DEV_automation);
-        Build DEV_JUnit = new Build("https://office.iworkscorp.com/hudson/view/DEV/job/App_build_and_deploy_dev_run_JUnit/lastSuccessfulBuild/api/json");
-        devList.add(DEV_JUnit);
-        Build DEV_tag_1 = new Build("https://office.iworkscorp.com/hudson/view/DEV/job/App_build_and_deploy_dev_build_tag_1/lastSuccessfulBuild/api/json");
-        devList.add(DEV_tag_1);
-        Build DEV_tag_2 = new Build("https://office.iworkscorp.com/hudson/view/DEV/job/App_build_and_deploy_dev_build_tag_2/lastSuccessfulBuild/api/json");
-        devList.add(DEV_tag_2);
-        Build DEV_tag_3 = new Build("https://office.iworkscorp.com/hudson/view/DEV/job/App_build_and_deploy_dev_build_tag_3/lastSuccessfulBuild/api/json");
-        devList.add(DEV_tag_3);
-
-
-        findMostRecent(devList);
-
-
-        ArrayList<Build> gatList = new ArrayList<Build>();
-        Build Gat_tag_1 = new Build("https://office.iworkscorp.com/hudson/view/GAT/job/App_build_and_deploy_gat_build_tag_1/lastSuccessfulBuild/api/json");
-        gatList.add(Gat_tag_1);
-        Build Gat_tag_2 = new Build("https://office.iworkscorp.com/hudson/view/GAT/job/App_build_and_deploy_gat_build_tag_2/lastSuccessfulBuild/api/json");
-        gatList.add(Gat_tag_2);
-        Build Gat_tag_3 = new Build("https://office.iworkscorp.com/hudson/view/GAT/job/App_build_and_deploy_gat_build_tag_3/lastSuccessfulBuild/api/json");
-        gatList.add(Gat_tag_3);
+/*        findMostRecent(devList);
 
         findMostRecent(gatList);
 
-        ArrayList<Build> qaList = new ArrayList<Build>();
-        Build QA_tag_1 = new Build("https://office.iworkscorp.com/hudson/view/QA/job/App_build_and_deploy_qa_build_tag_1/lastSuccessfulBuild/api/json");
-        qaList.add(QA_tag_1);
-        Build QA_tag_2 = new Build("https://office.iworkscorp.com/hudson/view/QA/job/App_build_and_deploy_qa_build_tag_2/lastSuccessfulBuild/api/json");
-        qaList.add(QA_tag_2);
-        Build QA_tag_3 = new Build("https://office.iworkscorp.com/hudson/view/QA/job/App_build_and_deploy_qa_build_tag_3/lastSuccessfulBuild/api/json");
-        qaList.add(QA_tag_3);
-
         findMostRecent(qaList);
 
-        ArrayList<Build> uatList = new ArrayList<Build>();
-        Build UAT_tag_1 = new Build("https://office.iworkscorp.com/hudson/view/UAT/job/App_build_and_deploy_uat_build_tag_1/lastSuccessfulBuild/api/json");
-        uatList.add((UAT_tag_1));
-        Build UAT_tag_2 = new Build("https://office.iworkscorp.com/hudson/view/UAT/job/App_build_and_deploy_uat_build_tag_2/lastSuccessfulBuild/api/json");
-        uatList.add((UAT_tag_2));
-        Build UAT_tag_3 = new Build("https://office.iworkscorp.com/hudson/view/UAT/job/App_build_and_deploy_uat_build_tag_3/lastSuccessfulBuild/api/json");
-        uatList.add((UAT_tag_3));
-
-        findMostRecent(uatList);
+        findMostRecent(uatList);*/
 
         System.out.println("dfa");
     }
@@ -105,5 +70,21 @@ public class StatusFetcher {
             }
         }
         return mostRecent;
+    }
+
+    private void createAllBuilds(){
+        //createBuildObjects(baselineBuilds, BuildLinks.BaseLineBuildLinks);
+        createBuildObjects(demoBuilds, BuildLinks.DemoBuildLinks);
+        createBuildObjects(devBuilds, BuildLinks.DevBuildLinks);
+//        createBuildObjects(gatBuilds, BuildLinks.GATBuildLinks);
+//        createBuildObjects(qaBuilds, BuildLinks.QABuildLinks);
+//        createBuildObjects(uatBuilds, BuildLinks.UATBuildLinks);
+    }
+
+    private void createBuildObjects(ArrayList<Build> environmentBuilds, ArrayList<String> buildURLS){
+        for(String buildURL: buildURLS){
+            Build build = new Build(buildURL);
+            environmentBuilds.add(build);
+        }
     }
 }
