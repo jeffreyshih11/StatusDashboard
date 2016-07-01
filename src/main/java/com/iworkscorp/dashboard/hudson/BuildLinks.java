@@ -12,6 +12,7 @@ public class BuildLinks {
 
     private static String success_json_URLTail = "/lastSuccessfulBuild/api/json";
     private static String fail_json_URLTail = "/lastFailedBuild/api/json";
+    private static String fullConsoleURLTail = "/lastBuild/consoleFull";
 
     private static String[] Environments = {"Baseline", "DEMO", "DEV", "GAT", "QA", "UAT"};
 
@@ -19,7 +20,7 @@ public class BuildLinks {
     private static String[] BaseLine_BuildTags = {"App_build_and_deploy_baseline_build_tag_1", "App_build_and_deploy_baseline_build_tag_2", "App_build_and_deploy_baseline_build_tag_3"};
     private static String[] DEMO_BuildTags = {"App_build_and_deploy_demo_build_tag_1", "App_build_and_deploy_demo_build_tag_2", "App_build_and_deploy_demo_build_tag_3"};
     private static String[] DEV_BuildTags = {"App_build_and_deploy_dev_automation", "App_build_and_deploy_dev_run_JUnit", "App_build_and_deploy_dev_build_tag_1", "App_build_and_deploy_dev_build_tag_2", "App_build_and_deploy_dev_build_tag_3"};
-    private static String[] GAT_BuildTags = {"App_build_and_deploy_qa_build_tag_1", "App_build_and_deploy_qa_build_tag_2", "App_build_and_deploy_qa_build_tag_3"};
+    private static String[] GAT_BuildTags = {"App_build_and_deploy_gat_build_tag_1", "App_build_and_deploy_gat_build_tag_2", "App_build_and_deploy_gat_build_tag_3"};
     private static String[] QA_BuildTags = {"App_build_and_deploy_qa_build_tag_1", "App_build_and_deploy_qa_build_tag_2", "App_build_and_deploy_qa_build_tag_3"};
     private static String[] UAT_BuildTags = {"App_build_and_deploy_uat_build_tag_1", "App_build_and_deploy_uat_build_tag_2", "App_build_and_deploy_uat_build_tag_3"};
 
@@ -61,11 +62,12 @@ public class BuildLinks {
         for(int i = 0; i < tags.length; i++){
             String URL = addEnvToLink(environment);
             URL = addBuildTagToLink(URL, tags[i]);
-            String successURL = addSuccess(URL);
-            String failURL = addFail(URL);
-
-            envBuildLinks.add(successURL);
-            envBuildLinks.add(failURL);
+//            String successURL = addSuccess(URL);
+//            String failURL = addFail(URL);
+            String fullURL = addFullConsole(URL);
+            envBuildLinks.add(fullURL);
+//            envBuildLinks.add(successURL);
+//            envBuildLinks.add(failURL);
 
         }
     }
@@ -83,6 +85,10 @@ public class BuildLinks {
 
     public static String addFail(String URL){
         return URL + fail_json_URLTail;
+    }
+
+    public static String addFullConsole(String URL){
+        return URL + fullConsoleURLTail;
     }
 
     public static void main(String args[]){

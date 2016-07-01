@@ -43,26 +43,37 @@ public class StatusFetcher {
 
         Build mostRecentBaseLineBuild = findMostRecent(baselineBuilds);*/
 
-        //ArrayList<Build> demoBuilds = new ArrayList<Build>();
 
 
         BuildLinks.populate_ALL_Links_Array();
         BuildLinks.makeBuildLinks();
         createAllBuilds();
 
-        Build mostRecentDemoBuild = findMostRecent(demoBuilds);
-/*        findMostRecent(devList);
+        ArrayList<Build> mostRecentBuilds = new ArrayList<Build>();
 
-        findMostRecent(gatList);
 
-        findMostRecent(qaList);
+        Build mostRecentBaselineBuild = findMostRecentinArray(baselineBuilds);
+        mostRecentBuilds.add(mostRecentBaselineBuild);
 
-        findMostRecent(uatList);*/
+        Build mostRecentDemoBuild = findMostRecentinArray(demoBuilds);
+        mostRecentBuilds.add(mostRecentDemoBuild);
+
+        Build mostRecentDEVBuild = findMostRecentinArray(devBuilds);
+        mostRecentBuilds.add(mostRecentDEVBuild);
+
+        Build mostRecentGATBuild = findMostRecentinArray(gatBuilds);
+        mostRecentBuilds.add(mostRecentGATBuild);
+
+        Build mostRecentQABuild = findMostRecentinArray(qaBuilds);
+        mostRecentBuilds.add(mostRecentQABuild);
+
+        Build mostRecentUATBuild = findMostRecentinArray(uatBuilds);
+        mostRecentBuilds.add(mostRecentUATBuild);
 
         System.out.println("dfa");
     }
 
-    private Build findMostRecent(ArrayList<Build> buildList) {
+    private Build findMostRecentinArray(ArrayList<Build> buildList) {
         Build mostRecent = buildList.get(0);
         for (int buildListIdx = 0; buildListIdx < buildList.size(); buildListIdx++) {
             if (!mostRecent.isMostRecent(buildList.get(buildListIdx))) {
@@ -73,12 +84,12 @@ public class StatusFetcher {
     }
 
     private void createAllBuilds(){
-        //createBuildObjects(baselineBuilds, BuildLinks.BaseLineBuildLinks);
+        createBuildObjects(baselineBuilds, BuildLinks.BaseLineBuildLinks);
         createBuildObjects(demoBuilds, BuildLinks.DemoBuildLinks);
         createBuildObjects(devBuilds, BuildLinks.DevBuildLinks);
-//        createBuildObjects(gatBuilds, BuildLinks.GATBuildLinks);
-//        createBuildObjects(qaBuilds, BuildLinks.QABuildLinks);
-//        createBuildObjects(uatBuilds, BuildLinks.UATBuildLinks);
+        createBuildObjects(gatBuilds, BuildLinks.GATBuildLinks);
+        createBuildObjects(qaBuilds, BuildLinks.QABuildLinks);
+        createBuildObjects(uatBuilds, BuildLinks.UATBuildLinks);
     }
 
     private void createBuildObjects(ArrayList<Build> environmentBuilds, ArrayList<String> buildURLS){
