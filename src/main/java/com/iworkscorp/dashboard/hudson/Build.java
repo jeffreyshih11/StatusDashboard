@@ -51,12 +51,14 @@ public class Build {
         if(pageSource.indexOf("Status Code: 404") > 0){
             this.revision = 0;
             this.builder = "N/A";
-            this.dateBuiltFull = "0-0-0_0-0-0";
+            this.dateBuiltFull = "N/A";
+            this.dateBuilt = "N/A";
+            this.timeBuilt = "N/A";
             this.status = false;
         }
 
         else {
-            System.out.println("useless code");
+            //System.out.println("useless code");
             int revIndex = pageSource.indexOf("At revision");
             this.revision = Integer.parseInt(pageSource.substring(revIndex + 12, revIndex + 17));
 
@@ -65,11 +67,11 @@ public class Build {
                 userIndex = pageSource.indexOf("Started by an SCM change");
                 this.builder = "N/A";
             } else {
-                this.builder = pageSource.substring(userIndex + 16, pageSource.indexOf("Cleaning") - 1);
+                this.builder = pageSource.substring(userIndex + 16, pageSource.indexOf("\n", userIndex));
             }
 
             int dateIndex = pageSource.indexOf("revision");
-            this.dateBuiltFull = pageSource.substring(dateIndex + 10, dateIndex + 34);
+            this.dateBuiltFull = pageSource.substring(dateIndex + 10, pageSource.indexOf("M", dateIndex + 13) + 1);
             this.dateBuilt = getDate(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
             this.timeBuilt = getTime(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
            // this.convertedTime = convertTime(dateBuiltFull);
@@ -185,6 +187,9 @@ public class Build {
     }
 
     public static String formatDate(String fullDateBuilt){
+        if(fullDateBuilt.equals("N/A")){
+            return "0:0:0";
+        }
         int month = getMonthNum(fullDateBuilt);
         String[] splitDate = fullDateBuilt.split(" ");
         return month + ":" + splitDate[1].substring(0, splitDate[1].length()-1) + ":" + splitDate[2];
@@ -203,11 +208,14 @@ public class Build {
             return time.substring(0, time.length()-3);
 
         }
-        else{
+        else if(time.indexOf("AM") > 0){
             if(time.substring(0, 2).equals("12")){
                 return 0 + time.substring(2,8);
             }
             return time.substring(0, time.length()-3);
+        }
+        else{
+            return "0:0:0";
         }
 
     }

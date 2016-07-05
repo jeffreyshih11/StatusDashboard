@@ -21,6 +21,7 @@ public class StatusFetcher {
     ArrayList<Build> gatBuilds = new ArrayList<Build>();
     ArrayList<Build> qaBuilds = new ArrayList<Build>();
     ArrayList<Build> uatBuilds = new ArrayList<Build>();
+    ArrayList<Build> mostRecentBuilds = new ArrayList<Build>();
 
     public void logIn(){
         driver.navigate().to(BuildLinks.getBaseURL() + "login?from=%2Fhudson");
@@ -49,8 +50,6 @@ public class StatusFetcher {
         BuildLinks.makeBuildLinks();
         createAllBuilds();
 
-        ArrayList<Build> mostRecentBuilds = new ArrayList<Build>();
-
 
         Build mostRecentBaselineBuild = findMostRecentinArray(baselineBuilds);
         mostRecentBuilds.add(mostRecentBaselineBuild);
@@ -70,7 +69,11 @@ public class StatusFetcher {
         Build mostRecentUATBuild = findMostRecentinArray(uatBuilds);
         mostRecentBuilds.add(mostRecentUATBuild);
 
-        System.out.println("dfa");
+        for(Build b: mostRecentBuilds){
+            System.out.println(b.builder + ":  " + b.dateBuiltFull);
+        }
+
+        //System.out.println("dfa");
     }
 
     private Build findMostRecentinArray(ArrayList<Build> buildList) {
