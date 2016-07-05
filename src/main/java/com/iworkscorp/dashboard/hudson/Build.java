@@ -56,6 +56,7 @@ public class Build {
         }
 
         else {
+            System.out.println("useless code");
             int revIndex = pageSource.indexOf("At revision");
             this.revision = Integer.parseInt(pageSource.substring(revIndex + 12, revIndex + 17));
 
