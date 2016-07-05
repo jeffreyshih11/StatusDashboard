@@ -11,6 +11,10 @@ public class StatusFetcherTest {
     @Test
     public void testConnectToHudson() throws Exception {
         TestBase.initialize();
+        statusFetcher.initialize();
         statusFetcher.connectToHudson();
     }
+
+
+
 }
