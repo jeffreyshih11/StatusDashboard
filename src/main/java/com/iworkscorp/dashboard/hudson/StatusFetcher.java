@@ -2,7 +2,10 @@ package com.iworkscorp.dashboard.hudson;
 
 import org.openqa.selenium.By;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import static com.iworkscorp.dashboard.hudson.TestBase.driver;
 
@@ -12,8 +15,7 @@ import static com.iworkscorp.dashboard.hudson.TestBase.driver;
 public class StatusFetcher {
 
 
-    String username = "avillaflor";
-    String password = "avillaflor";
+
     ArrayList<Build> baselineBuilds = new ArrayList<Build>();
     ArrayList<Build> demoBuilds = new ArrayList<Build>();
     ArrayList<Build> devBuilds = new ArrayList<Build>();
@@ -22,29 +24,31 @@ public class StatusFetcher {
     ArrayList<Build> uatBuilds = new ArrayList<Build>();
     ArrayList<Build> mostRecentBuilds = new ArrayList<Build>();
 
+    public static Properties CONFIG = null;
+    public static final String CONFIG_PATH = "//src//main//resources//";
+
+    public void initialize() throws IOException {
+        CONFIG = new Properties();
+        FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
+        CONFIG.load(fn);
+    }
+
     public void logIn(){
-        driver.navigate().to(BuildLinks.getBaseURL() + "login?from=%2Fhudson");
+
+        //System.out.println(CONFIG.getProperty("username"));
+        driver.navigate().to(CONFIG.getProperty("baseURL") + "login?from=%2Fhudson");
+        //driver.navigate().to(sbaseURL + "login?from=%2Fhudson");
+
         ReusableFunctions.waitUntilElementExistsAndClick(By.xpath("//*[text()='log in']"), 1500);
-        ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_username']"), username);
-        ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_password']"), password);
+        ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_username']"), CONFIG.getProperty("username"));
+        ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_password']"), CONFIG.getProperty("password"));
         ReusableFunctions.waitUntilElementExistsAndClick(By.xpath("//*[@id='loginForm']//input[@id='loginButton']"), 2000);
     }
     public void connectToHudson() throws Exception {
 
         logIn();
 
-       /* ArrayList<Build> baselineBuilds = new ArrayList<Build>();
-        Build baseline_tag_1 = new Build("https://office.iworkscorp.com/hudson/view/Baseline/job/App_build_and_deploy_baseline_build_tag_1/lastSuccessfulBuild/api/json");
-        baselineBuilds.add(baseline_tag_1);
-        Build baseline_tag_2 = new Build("https://office.iworkscorp.com/hudson/view/Baseline/job/App_build_and_deploy_baseline_build_tag_2/lastSuccessfulBuild/api/json");
-        baselineBuilds.add(baseline_tag_2);
-        Build baseline_tag_3 = new Build("https://office.iworkscorp.com/hudson/view/Baseline/job/App_build_and_deploy_baseline_build_tag_3/lastSuccessfulBuild/api/json");
-        baselineBuilds.add(baseline_tag_3);
-
-        Build mostRecentBaseLineBuild = findMostRecent(baselineBuilds);*/
-
-
-
+        BuildLinks.initialize();
         BuildLinks.populate_ALL_Links_Array();
         BuildLinks.makeBuildLinks();
         createAllBuilds();

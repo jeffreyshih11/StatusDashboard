@@ -1,30 +1,31 @@
 package com.iworkscorp.dashboard.hudson;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * Created by jshih on 6/30/2016.
  */
 public class BuildLinks {
 
-    private static final int numEnvironments = 6;
-    private static String baseURL = "https://office.iworkscorp.com/hudson/";
 
-    private static String success_json_URLTail = "/lastSuccessfulBuild/api/json";
-    private static String fail_json_URLTail = "/lastFailedBuild/api/json";
-    private static String fullConsoleURLTail = "/lastBuild/consoleFull";
+    /*private static String baseURL = "https://office.iworkscorp.com/hudson/";
+    private static String fullConsoleURLTail = "/lastBuild/consoleFull";*/
+
+    public static Properties CONFIG = null;
+    public static final String CONFIG_PATH = "//src//main//resources//";
 
     private static String[] Environments = {"Baseline", "DEMO", "DEV", "GAT", "QA", "UAT"};
+    private static String[] BaseLine_BuildTags;
+    private static String[] DEMO_BuildTags;
+    private static String[] DEV_BuildTags;
+    private static String[] GAT_BuildTags;
+    private static String[] QA_BuildTags;
+    private static String[] UAT_BuildTags;
 
-
-    private static String[] BaseLine_BuildTags = {"App_build_and_deploy_baseline_build_tag_1", "App_build_and_deploy_baseline_build_tag_2", "App_build_and_deploy_baseline_build_tag_3"};
-    private static String[] DEMO_BuildTags = {"App_build_and_deploy_demo_build_tag_1", "App_build_and_deploy_demo_build_tag_2", "App_build_and_deploy_demo_build_tag_3"};
-    private static String[] DEV_BuildTags = {"App_build_and_deploy_dev_automation", "App_build_and_deploy_dev_run_JUnit", "App_build_and_deploy_dev_build_tag_1", "App_build_and_deploy_dev_build_tag_2", "App_build_and_deploy_dev_build_tag_3"};
-    private static String[] GAT_BuildTags = {"App_build_and_deploy_gat_build_tag_1", "App_build_and_deploy_gat_build_tag_2", "App_build_and_deploy_gat_build_tag_3"};
-    private static String[] QA_BuildTags = {"App_build_and_deploy_qa_build_tag_1", "App_build_and_deploy_qa_build_tag_2", "App_build_and_deploy_qa_build_tag_3"};
-    private static String[] UAT_BuildTags = {"App_build_and_deploy_uat_build_tag_1", "App_build_and_deploy_uat_build_tag_2", "App_build_and_deploy_uat_build_tag_3"};
-
-    private static String[][] All_BuildTags = {BaseLine_BuildTags, DEMO_BuildTags, DEV_BuildTags, GAT_BuildTags, QA_BuildTags, UAT_BuildTags};
+    private static String[][] All_BuildTags;
 
     static ArrayList<String> BaseLineBuildLinks = new ArrayList<String>();
     static ArrayList<String> DemoBuildLinks = new ArrayList<String>();
@@ -45,13 +46,10 @@ public class BuildLinks {
 
     }
 
-    public static String getBaseURL(){
-        return baseURL;
-    }
 
     public static void makeBuildLinks(){
-        for(int i = 0; i < numEnvironments; i++){
-            System.out.println(Environments[i]);
+        for(int i = 0; i < Integer.parseInt(CONFIG.getProperty("numEnvironments")); i++){
+            //System.out.println(Environments[i]);
             makeLinks(Environments[i], All_BuildTags[i], All_Links_Array.get(i));
 
         }
@@ -72,26 +70,36 @@ public class BuildLinks {
         }
     }
     public static String addEnvToLink(String environment){
-        return baseURL + "view/" + environment + "/job/";
+        return CONFIG.getProperty("baseURL") + "view/" + environment + "/job/";
     }
 
     public static String addBuildTagToLink(String URL, String buildtags){
         return URL + buildtags;
     }
 
-    public static String addSuccess(String URL){
-        return URL + success_json_URLTail;
-    }
-
-    public static String addFail(String URL){
-        return URL + fail_json_URLTail;
-    }
 
     public static String addFullConsole(String URL){
-        return URL + fullConsoleURLTail;
+        return URL + CONFIG.getProperty("fullConsoleURLTail");
     }
 
-    public static void main(String args[]){
+
+    public static void initialize() throws IOException {
+        CONFIG = new Properties();
+        FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
+        CONFIG.load(fn);
+
+        BaseLine_BuildTags = new String[]{CONFIG.getProperty("baseline_Tag_1"), CONFIG.getProperty("baseline_Tag_2"), CONFIG.getProperty("baseline_Tag_3")};
+        DEMO_BuildTags = new String[]{CONFIG.getProperty("DEMO_Tag_1"), CONFIG.getProperty("DEMO_Tag_2"), CONFIG.getProperty("DEMO_Tag_3")};
+        DEV_BuildTags = new String[]{CONFIG.getProperty("DEV_Tag_1"), CONFIG.getProperty("DEV_Tag_2"), CONFIG.getProperty("DEV_Tag_3"), CONFIG.getProperty("DEV_auto"), CONFIG.getProperty("DEV_Junit")};
+        GAT_BuildTags = new String[]{CONFIG.getProperty("GAT_Tag_1"), CONFIG.getProperty("GAT_Tag_2"), CONFIG.getProperty("GAT_Tag_3")};
+        QA_BuildTags = new String[]{CONFIG.getProperty("QA_Tag_1"), CONFIG.getProperty("QA_Tag_2"), CONFIG.getProperty("QA_Tag_3")};
+        UAT_BuildTags = new String[]{CONFIG.getProperty("UAT_Tag_1"), CONFIG.getProperty("UAT_Tag_2"), CONFIG.getProperty("UAT_Tag_3")};
+
+        All_BuildTags = new String[][]{BaseLine_BuildTags, DEMO_BuildTags, DEV_BuildTags, GAT_BuildTags, QA_BuildTags, UAT_BuildTags};
+    }
+
+
+    /*public void main(String args[]){
         populate_ALL_Links_Array();
         makeBuildLinks();
         for(String s: BaseLineBuildLinks){
@@ -112,5 +120,10 @@ public class BuildLinks {
         for(String s: UATBuildLinks){
             System.out.println(s);
         }
-    }
+    }*/
 }
+
+
+
+
+

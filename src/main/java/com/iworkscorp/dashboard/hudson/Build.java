@@ -74,7 +74,7 @@ public class Build {
             this.dateBuiltFull = pageSource.substring(dateIndex + 10, pageSource.indexOf("M", dateIndex + 13) + 1);
             this.dateBuilt = getDate(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
             this.timeBuilt = getTime(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
-           // this.convertedTime = convertTime(dateBuiltFull);
+            // this.convertedTime = convertTime(dateBuiltFull);
 
             this.status = false;
         }
@@ -219,7 +219,7 @@ public class Build {
         }
 
     }
-    
+
     public static int getMonthNum(String date){
         if (date.indexOf("Jan") >= 0) {
             return 1;
