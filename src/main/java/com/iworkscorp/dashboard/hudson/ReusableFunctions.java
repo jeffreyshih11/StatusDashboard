@@ -21,7 +21,7 @@ import java.util.Properties;
  * @author vshivaraman
  * @author vpandey
  */
-public class ReusableFunctions extends TestBase {
+public class ReusableFunctions extends com.iworkscorp.dashboard.hudson.TestBase {
 
 //	private static Logger LOGGER = LoggerFactory.getLogger(ReusableFunctions.class);
 

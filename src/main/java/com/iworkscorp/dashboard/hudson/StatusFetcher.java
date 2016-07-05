@@ -3,7 +3,6 @@ package com.iworkscorp.dashboard.hudson;
 import org.openqa.selenium.By;
 
 import java.util.ArrayList;
-import com.iworkscorp.dashboard.hudson.BuildLinks;
 
 import static com.iworkscorp.dashboard.hudson.TestBase.driver;
 
