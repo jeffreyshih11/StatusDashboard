@@ -57,7 +57,7 @@ public class StatusFetcher {
         getAllMostRecents();
 
         for(Build b: mostRecentBuilds){
-            System.out.println(b.builder + ":  " + b.dateBuiltFull);
+            System.out.println(b.environment + ":: " + b.builder + ":  " + b.dateBuiltFull);
         }
 
         //System.out.println("dfa");
