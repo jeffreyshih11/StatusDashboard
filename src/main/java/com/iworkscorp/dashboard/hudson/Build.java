@@ -7,29 +7,33 @@ import static com.iworkscorp.dashboard.hudson.TestBase.driver;
  */
 public class Build {
 
+    String environment;
     int revision;
     String builder;
     String dateBuiltFull;
     String dateBuilt;
     String timeBuilt;
     String buildStatus;
-    boolean smokeTestRun;
-    boolean smokeTestPass;
+    String smokeTestRun;
+    String smokeTestPass;
 
 
     public Build(){
+        this.environment = "";
         this.revision = 0;
         this.builder = "";
         this.dateBuiltFull = "";
         this.dateBuilt = "";
         this.timeBuilt = "";
         buildStatus = "";
-        this.smokeTestRun = false;
-        this.smokeTestPass = false;
+        this.smokeTestRun = "";
+        this.smokeTestPass = "";
 
 
     }
-    public Build(int revision, String builder, String dateBuiltFull, String status){
+    public Build(String environment, int revision, String builder, String dateBuiltFull, String status, String smokeTestRun, String smokeTestPass){
+
+        this.environment = environment;
         this.revision = revision;
         this.builder = builder;
         this.dateBuiltFull = dateBuiltFull;
@@ -37,8 +41,8 @@ public class Build {
         this.timeBuilt = getTime(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
 
         this.buildStatus = status;
-        this.smokeTestRun = false;
-        this.smokeTestPass = false;
+        this.smokeTestRun = smokeTestRun;
+        this.smokeTestPass = smokeTestPass;
 
     }
 
@@ -49,6 +53,8 @@ public class Build {
     public Build(String url){
         driver.navigate().to(url);
         String pageSource = driver.getPageSource();
+
+        this.environment = findEnvironment(url);
 
         if(pageSource.indexOf("Status Code: 404") > 0){
             this.revision = 0;
@@ -67,7 +73,7 @@ public class Build {
             int userIndex = pageSource.indexOf("Started by user");
             if (userIndex <= 0) {
                 userIndex = pageSource.indexOf("Started by an SCM change");
-                this.builder = "N/A";
+                this.builder = "Automated";
             } else {
                 this.builder = pageSource.substring(userIndex + 16, pageSource.indexOf("\n", userIndex));
             }
@@ -87,8 +93,8 @@ public class Build {
             }
         }
 
-        this.smokeTestRun = false;
-        this.smokeTestPass = false;
+        this.smokeTestRun = "";
+        this.smokeTestPass = "";
 
     }
 
@@ -96,13 +102,13 @@ public class Build {
         buildStatus = status;
     }*/
 
-    public void setSmokeTestRun(boolean smokeTestRun){
+   /* public void setSmokeTestRun(boolean smokeTestRun){
         this.smokeTestRun = smokeTestRun;
     }
 
     public void setSmokeTestPass(boolean smokeTestPass){
         this.smokeTestPass = smokeTestPass;
-    }
+    }*/
 
     /**
      * Compares two build objects to see which one is more recent
@@ -294,6 +300,31 @@ public class Build {
         else{
             return -1;
         }
+    }
+
+    public String findEnvironment(String url){
+        if(url.indexOf("Baseline") > 0){
+            return "Baseline";
+        }
+        else if(url.indexOf("DEMO") > 0){
+            return "DEMO";
+        }
+        else if(url.indexOf("DEV") > 0){
+            return "DEV";
+        }
+        else if(url.indexOf("GAT") > 0){
+            return "GAT";
+        }
+        else if(url.indexOf("QA") > 0){
+            return "QA";
+        }
+        else if(url.indexOf("UAT") > 0){
+            return "UAT";
+        }
+        else {
+            return "Not Available";
+        }
+
     }
 
 
