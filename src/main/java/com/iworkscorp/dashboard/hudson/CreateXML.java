@@ -63,7 +63,6 @@ public class CreateXML {
             //write data
             //transformer.transform(source, console);
             transformer.transform(source, file);
-
             System.out.println("DONE");
 
         } catch (Exception e) {
