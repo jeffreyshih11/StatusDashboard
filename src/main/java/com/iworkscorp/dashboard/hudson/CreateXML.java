@@ -75,13 +75,14 @@ public class CreateXML {
         environment.appendChild(getElements(doc, environment, "Builder", build.builder));
         environment.appendChild(getElements(doc, environment, "Date", build.dateBuiltFull));
         environment.appendChild(getElements(doc, environment, "Revision", Integer.toString(build.revision)));
-        Element node = doc.createElement("Build Status");
+        Element node = doc.createElement("Status");
         if (build.status){
             node.appendChild(doc.createTextNode("true"));
         }
         else {
             node.appendChild(doc.createTextNode("false"));
         }
+        environment.appendChild(node);
         return environment;
     }
 
