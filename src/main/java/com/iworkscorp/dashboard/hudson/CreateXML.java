@@ -18,7 +18,17 @@ import org.w3c.dom.Node;
 
 public class CreateXML {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
+        StatusFetcher statuses = new StatusFetcher();
+        TestBase.initialize();
+        statuses.initialize();
+        statuses.connectToHudson();
+        ArrayList<Build> builds = statuses.mostRecentBuilds;
+        CreateXML create = new CreateXML();
+        create.createXML(builds);
+    }
+
+    public void createXML(ArrayList<Build> builds) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder;
         try {
@@ -29,19 +39,16 @@ public class CreateXML {
                     doc.createElementNS("", "Environments");
             //append root element to document
             doc.appendChild(rootElement);
-            StatusFetcher statuses = new StatusFetcher();
-            statuses.connectToHudson();
-            ArrayList<Build> builds = statuses.mostRecentBuilds;
+
+
+
 
             for(int i = 0; i < builds.size(); i++){
-                rootElement.appendChild(getBuild(doc, builds.get(i)));
+                Element environment = doc.createElement("Environment");
+                environment.setAttribute("id", Integer.toString(i));
+                rootElement.appendChild(getBuild(doc, builds.get(i), environment));
             }
 
-            //append first child element to root element
-            rootElement.appendChild(getEmployee(doc, "1", "Pankaj", "29", "Java Developer", "Male"));
-
-            //append second child
-            rootElement.appendChild(getEmployee(doc, "2", "Lisa", "35", "Manager", "Female"));
 
             //for output to file, console
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -64,34 +71,19 @@ public class CreateXML {
         }
     }
 
-    private static Node getBuild(Document doc, Build build){
-        Element environment = doc.createElement("Environment");
+    private static Node getBuild(Document doc, Build build, Element environment){
         environment.appendChild(getElements(doc, environment, "Builder", build.builder));
+        environment.appendChild(getElements(doc, environment, "Date", build.dateBuiltFull));
+        environment.appendChild(getElements(doc, environment, "Revision", Integer.toString(build.revision)));
+        Element node = doc.createElement("Build Status");
+        if (build.status){
+            node.appendChild(doc.createTextNode("true"));
+        }
+        else {
+            node.appendChild(doc.createTextNode("false"));
+        }
         return environment;
     }
-
-    private static Node getEmployee(Document doc, String id, String name, String age, String role,
-                                    String gender) {
-        Element employee = doc.createElement("Employee");
-
-        //set id attribute
-        employee.setAttribute("id", id);
-
-        //create name element
-        employee.appendChild(getElements(doc, employee, "name", name));
-
-        //create age element
-        employee.appendChild(getElements(doc, employee, "age", age));
-
-        //create role element
-        employee.appendChild(getElements(doc, employee, "role", role));
-
-        //create gender element
-        employee.appendChild(getElements(doc, employee, "gender", gender));
-
-        return employee;
-    }
-
 
     //utility method to create text node
     private static Node getElements(Document doc, Element element, String name, String value) {
