@@ -44,7 +44,7 @@ public class CreateXML {
 
             for(int i = 0; i < builds.size(); i++){
                 Element environment = doc.createElement("Environment");
-                environment.setAttribute("id", Integer.toString(i));
+                environment.setAttribute("name", builds.get(i).environment);
                 rootElement.appendChild(getBuild(doc, builds.get(i), environment));
             }
 
@@ -74,10 +74,8 @@ public class CreateXML {
         environment.appendChild(getElements(doc, environment, "Builder", build.builder));
         environment.appendChild(getElements(doc, environment, "Date", build.dateBuiltFull));
         environment.appendChild(getElements(doc, environment, "Revision", Integer.toString(build.revision)));
-        Element node = doc.createElement("Status");
-        node.appendChild(doc.createTextNode(build.buildStatus));
-
-        environment.appendChild(node);
+        environment.appendChild(getElements(doc, environment, "Status", build.buildStatus));
+        environment.appendChild(getElements(doc, environment, "SmokeTestPass", build.smokeTestPass));
         return environment;
     }
 
