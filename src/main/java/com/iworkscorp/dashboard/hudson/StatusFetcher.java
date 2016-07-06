@@ -33,17 +33,18 @@ public class StatusFetcher {
         CONFIG.load(fn);
     }
 
+    /**
+     * Logs into Hudson
+     */
     public void logIn(){
-
-        //System.out.println(CONFIG.getProperty("username"));
         driver.navigate().to(CONFIG.getProperty("baseURL") + "login?from=%2Fhudson");
-        //driver.navigate().to(sbaseURL + "login?from=%2Fhudson");
 
         ReusableFunctions.waitUntilElementExistsAndClick(By.xpath("//*[text()='log in']"), 1500);
         ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_username']"), CONFIG.getProperty("username"));
         ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_password']"), CONFIG.getProperty("password"));
         ReusableFunctions.waitUntilElementExistsAndClick(By.xpath("//*[@id='loginForm']//input[@id='loginButton']"), 2000);
     }
+
     public void connectToHudson() throws Exception {
 
         logIn();
@@ -53,24 +54,7 @@ public class StatusFetcher {
         BuildLinks.makeBuildLinks();
         createAllBuilds();
 
-
-        Build mostRecentBaselineBuild = findMostRecentinArray(baselineBuilds);
-        mostRecentBuilds.add(mostRecentBaselineBuild);
-
-        Build mostRecentDemoBuild = findMostRecentinArray(demoBuilds);
-        mostRecentBuilds.add(mostRecentDemoBuild);
-
-        Build mostRecentDEVBuild = findMostRecentinArray(devBuilds);
-        mostRecentBuilds.add(mostRecentDEVBuild);
-
-        Build mostRecentGATBuild = findMostRecentinArray(gatBuilds);
-        mostRecentBuilds.add(mostRecentGATBuild);
-
-        Build mostRecentQABuild = findMostRecentinArray(qaBuilds);
-        mostRecentBuilds.add(mostRecentQABuild);
-
-        Build mostRecentUATBuild = findMostRecentinArray(uatBuilds);
-        mostRecentBuilds.add(mostRecentUATBuild);
+        getAllMostRecents();
 
         for(Build b: mostRecentBuilds){
             System.out.println(b.builder + ":  " + b.dateBuiltFull);
@@ -79,6 +63,25 @@ public class StatusFetcher {
         //System.out.println("dfa");
     }
 
+    /**
+     * Gets the most recent build from each environment
+     */
+    private void getAllMostRecents() {
+
+        mostRecentBuilds.add(findMostRecentinArray(baselineBuilds));
+        mostRecentBuilds.add(findMostRecentinArray(demoBuilds));
+        mostRecentBuilds.add(findMostRecentinArray(devBuilds));
+        mostRecentBuilds.add(findMostRecentinArray(gatBuilds));
+        mostRecentBuilds.add(findMostRecentinArray(qaBuilds));
+        mostRecentBuilds.add(findMostRecentinArray(uatBuilds));
+
+    }
+
+    /**
+     * Finds the most recent build given an array of build objects
+     * @param buildList
+     * @return
+     */
     private Build findMostRecentinArray(ArrayList<Build> buildList) {
         Build mostRecent = buildList.get(0);
         for (int buildListIdx = 0; buildListIdx < buildList.size(); buildListIdx++) {
@@ -89,6 +92,9 @@ public class StatusFetcher {
         return mostRecent;
     }
 
+    /**
+     * Creates build objects for all environments and build tags
+     */
     private void createAllBuilds(){
         createBuildObjects(baselineBuilds, BuildLinks.BaseLineBuildLinks);
         createBuildObjects(demoBuilds, BuildLinks.DemoBuildLinks);
@@ -98,6 +104,11 @@ public class StatusFetcher {
         createBuildObjects(uatBuilds, BuildLinks.UATBuildLinks);
     }
 
+    /**
+     * Creates build objects for each build tag
+     * @param environmentBuilds
+     * @param buildURLS
+     */
     private void createBuildObjects(ArrayList<Build> environmentBuilds, ArrayList<String> buildURLS){
         for(String buildURL: buildURLS){
             Build build = new Build(buildURL);
