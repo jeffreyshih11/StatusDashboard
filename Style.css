@@ -1,0 +1,31 @@
+table {
+    border-style: solid;
+    border-color: black;
+    width: 50%;
+}
+Body{
+     background: linear-gradient(#e6e6e6, white);
+     background: -moz-linear-gradient(#e6e6e6, white);
+      background: -webkit-linear-gradient(#e6e6e6, white);
+}
+table{ background: linear-gradient(white, white);}
+h2 {
+    font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;
+}
+tr{
+    font-family:Georgia, Serif;
+    font-size: 14px;
+    font-weight: normal;
+}
+hr{
+    background: linear-gradient(#cccccc, white);
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+tr:nth-child(even){background-color: #DADADA}
+th {
+    background-color: #0957a3;
+    color: white;
+}
