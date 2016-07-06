@@ -1,7 +1,8 @@
 package com.iworkscorp.dashboard.hudson;
 
-import java.io.File;
-import java.util.ArrayList;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,10 +11,8 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import java.io.File;
+import java.util.ArrayList;
 
 
 public class CreateXML {
@@ -59,11 +58,12 @@ public class CreateXML {
 
             //write to console or file
             StreamResult console = new StreamResult(System.out);
-            StreamResult file = new StreamResult(new File("C:\\Users\\avillaflor\\Documents\\GitHub\\StatusDashboard\\example.xml"));
-
+            //StreamResult file = new StreamResult(new File("C:\\Users\\avillaflor\\Documents\\GitHub\\StatusDashboard\\example.xml"));
+            StreamResult file = new StreamResult(new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml"));
             //write data
-            transformer.transform(source, console);
+            //transformer.transform(source, console);
             transformer.transform(source, file);
+
             System.out.println("DONE");
 
         } catch (Exception e) {
@@ -76,12 +76,8 @@ public class CreateXML {
         environment.appendChild(getElements(doc, environment, "Date", build.dateBuiltFull));
         environment.appendChild(getElements(doc, environment, "Revision", Integer.toString(build.revision)));
         Element node = doc.createElement("Status");
-        if (build.status){
-            node.appendChild(doc.createTextNode("true"));
-        }
-        else {
-            node.appendChild(doc.createTextNode("false"));
-        }
+        node.appendChild(doc.createTextNode(build.buildStatus));
+
         environment.appendChild(node);
         return environment;
     }
