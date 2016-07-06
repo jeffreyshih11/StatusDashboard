@@ -7,7 +7,8 @@
 
   DocumentBuilder db = dbf.newDocumentBuilder();
 
-  Document doc = db.parse("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\DashboardModule\\web\\name.xml");
+  //Document doc = db.parse("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\DashboardModule\\web\\name.xml");
+  Document doc = db.parse("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml");
 
   NodeList Environment = doc.getElementsByTagName("Environment");
   NodeList Revision = doc.getElementsByTagName("Revision");
@@ -18,7 +19,7 @@
 
 <html>
 
-<center><h2>DISS PROJECT ENVIRONMENTS</h2></center>
+<center><h2>PROJECT ENVIRONMENTS</h2></center>
 
 <p></p>
 <p></p>
@@ -31,8 +32,8 @@
       <th>Builder</th>
       <th>Date</th>
       <th>Build Status</th>
-      <th>Smoke Test Status</th>
-      <th>Build Tag</th>
+      <%--<th>Smoke Test Status</th>
+      <th>Build Tag</th>--%>
     </tr>
     <%
       int i;
@@ -42,7 +43,6 @@
 
     <tr>
       <td>
-
         <%= Environment.item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
