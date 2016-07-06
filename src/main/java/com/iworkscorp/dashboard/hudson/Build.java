@@ -84,13 +84,20 @@ public class Build {
             this.timeBuilt = getTime(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
 
 
-            int buildingIdx = pageSource.indexOf("Progress:");
-            if(buildingIdx > 0){
+            int buildIdx = pageSource.indexOf("Progress:");
+            if(buildIdx > 0){
                 buildStatus = "building";
             }
             else{
-                buildStatus = "true";
+                buildIdx = pageSource.indexOf("FAILURE");
+                if(buildIdx > 0){
+                    buildStatus = "false";
+                }
+                else{
+                    buildStatus = "true";
+                }
             }
+
         }
 
         this.smokeTestRun = "";
