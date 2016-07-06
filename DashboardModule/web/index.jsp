@@ -19,7 +19,7 @@
 
 <html>
 
-<center><h2>PROJECT ENVIRONMENTS</h2></center>
+<center><h2>DISS PROJECT ENVIRONMENTS</h2></center>
 
 <p></p>
 <p></p>
@@ -42,8 +42,9 @@
     %>
 
     <tr>
+
       <td>
-        <%= Environment.item(i).getFirstChild().getNodeValue()%>
+        <%= Environment.item(i).getAttributes().getNamedItem("name").getNodeValue()%>
       </td>
       <td>
         <%= Revision.item(i).getFirstChild().getNodeValue()%>
