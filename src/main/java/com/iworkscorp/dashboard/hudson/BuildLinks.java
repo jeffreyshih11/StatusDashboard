@@ -10,10 +10,6 @@ import java.util.Properties;
  */
 public class BuildLinks {
 
-
-    /*private static String baseURL = "https://office.iworkscorp.com/hudson/";
-    private static String fullConsoleURLTail = "/lastBuild/consoleFull";*/
-
     public static Properties CONFIG = null;
     public static final String CONFIG_PATH = "//src//main//resources//";
 
@@ -36,6 +32,9 @@ public class BuildLinks {
 
     static ArrayList<ArrayList<String>> All_Links_Array = new ArrayList<ArrayList<String>>();
 
+    /**
+     * Stores all of the links
+     */
     public static void populate_ALL_Links_Array(){
         All_Links_Array.add(BaseLineBuildLinks);
         All_Links_Array.add(DemoBuildLinks);
@@ -47,6 +46,9 @@ public class BuildLinks {
     }
 
 
+    /**
+     * Creates all the build URLs for all the environments
+     */
     public static void makeBuildLinks(){
         for(int i = 0; i < Integer.parseInt(CONFIG.getProperty("numEnvironments")); i++){
             //System.out.println(Environments[i]);
@@ -56,38 +58,65 @@ public class BuildLinks {
 
     }
 
+    /**
+     * Creates the full links for each build tag for the specified environment
+     * and then adds the URL to the arraylist of full links
+     * @param environment
+     * @param tags
+     * @param envBuildLinks
+     */
     public static void makeLinks(String environment, String[] tags, ArrayList<String> envBuildLinks){
+
         for(int i = 0; i < tags.length; i++){
             String URL = addEnvToLink(environment);
             URL = addBuildTagToLink(URL, tags[i]);
-//            String successURL = addSuccess(URL);
-//            String failURL = addFail(URL);
+
             String fullURL = addFullConsole(URL);
             envBuildLinks.add(fullURL);
-//            envBuildLinks.add(successURL);
-//            envBuildLinks.add(failURL);
 
         }
     }
+
+    /**
+     * Adds the specific environment to the URL
+     * @param environment
+     * @return
+     */
     public static String addEnvToLink(String environment){
         return CONFIG.getProperty("baseURL") + "view/" + environment + "/job/";
     }
 
+    /**
+     * Adds build tag address to the URL
+     * @param URL
+     * @param buildtags
+     * @return
+     */
     public static String addBuildTagToLink(String URL, String buildtags){
         return URL + buildtags;
     }
 
 
+    /**
+     * Adds the full console tail to the URL
+     * @param URL
+     * @return
+     */
     public static String addFullConsole(String URL){
         return URL + CONFIG.getProperty("fullConsoleURLTail");
     }
 
 
+    /**
+     * Initializes by loading the config file and populating the build tag arrays
+     * @throws IOException
+     */
     public static void initialize() throws IOException {
         CONFIG = new Properties();
         FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
         CONFIG.load(fn);
 
+        //Fills each environment array with all the build tags needed
         BaseLine_BuildTags = new String[]{CONFIG.getProperty("baseline_Tag_1"), CONFIG.getProperty("baseline_Tag_2"), CONFIG.getProperty("baseline_Tag_3")};
         DEMO_BuildTags = new String[]{CONFIG.getProperty("DEMO_Tag_1"), CONFIG.getProperty("DEMO_Tag_2"), CONFIG.getProperty("DEMO_Tag_3")};
         DEV_BuildTags = new String[]{CONFIG.getProperty("DEV_Tag_1"), CONFIG.getProperty("DEV_Tag_2"), CONFIG.getProperty("DEV_Tag_3"), CONFIG.getProperty("DEV_auto"), CONFIG.getProperty("DEV_Junit")};
