@@ -12,11 +12,10 @@ public class Build {
     String dateBuiltFull;
     String dateBuilt;
     String timeBuilt;
-    String convertedTime;
     boolean status;
     boolean smokeTestRun;
     boolean smokeTestPass;
-    boolean isMostRecent;
+
 
     public Build(){
         this.revision = 0;
@@ -24,11 +23,10 @@ public class Build {
         this.dateBuiltFull = "";
         this.dateBuilt = "";
         this.timeBuilt = "";
-        this.convertedTime = "";
         this.status = false;
         this.smokeTestRun = false;
         this.smokeTestPass = false;
-        this.isMostRecent = false;
+
 
     }
     public Build(int revision, String builder, String dateBuiltFull, boolean status){
@@ -37,13 +35,17 @@ public class Build {
         this.dateBuiltFull = dateBuiltFull;
         this.dateBuilt = getDate(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
         this.timeBuilt = getTime(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
-        //this.convertedTime = convertTime(dateBuiltFull);
+
         this.status = status;
         this.smokeTestRun = false;
         this.smokeTestPass = false;
-        this.isMostRecent = false;
+
     }
 
+    /**
+     * Creates a build object given the URL
+     * @param url
+     */
     public Build(String url){
         driver.navigate().to(url);
         String pageSource = driver.getPageSource();
@@ -74,14 +76,14 @@ public class Build {
             this.dateBuiltFull = pageSource.substring(dateIndex + 10, pageSource.indexOf("M", dateIndex + 13) + 1);
             this.dateBuilt = getDate(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
             this.timeBuilt = getTime(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
-            // this.convertedTime = convertTime(dateBuiltFull);
+
 
             this.status = false;
         }
 
         this.smokeTestRun = false;
         this.smokeTestPass = false;
-        this.isMostRecent = false;
+
     }
 
     public void setStatus(boolean status){
@@ -96,6 +98,11 @@ public class Build {
         this.smokeTestPass = smokeTestPass;
     }
 
+    /**
+     * Compares two build objects to see which one is more recent
+     * @param other
+     * @return
+     */
     public boolean isMostRecent(Build other){
 
         String[] thisDate = formatDate(this.dateBuilt).split(":");
@@ -151,8 +158,7 @@ public class Build {
 
     }
 
-    public String convertTime(String time){
-
+    /*public String convertTime(String time){
 
         String[] FullTime = time.split("_");
         String cDate = FullTime[0].replace("-", "/");
@@ -160,32 +166,44 @@ public class Build {
 
         return cDate + " " + cTime;
 
-    }
+    }*/
 
-    public static void main(String[] args){
-/*        System.out.println(timeIn24HourClock("12:46:48 PM"));
-        System.out.println(formatDate("Oct 16, 2015"));
-        System.out.println(getDate("Oct 16, 2015 2:46:48 PM", getCommaIdx("Oct 16, 2015 2:46:48 PM")));
-        System.out.println(getTime("Oct 16, 2015 2:46:48 PM", getCommaIdx("Oct 16, 2015 2:46:48 PM")));*/
-        Build b1 = new Build(1234, "jeffrey", "Oct 16, 2015 2:46:48 PM", true);
-        Build b2 = new Build(5678, "asdf", "Oct 11, 2015 2:46:48 PM", false);
-//
-        boolean is = b1.isMostRecent(b2);
-        System.out.print("df");
-    }
 
+    /**
+     * Finds the comma index given the full date and time
+     * @param fullDateBuilt
+     * @return
+     */
     public static int getCommaIdx(String fullDateBuilt){
         return fullDateBuilt.indexOf(",");
     }
+
+    /**
+     * Gets just the date a build was built
+     * @param fullDateBuilt
+     * @param commaIdx
+     * @return
+     */
     public static String getDate(String fullDateBuilt, int commaIdx){
         return fullDateBuilt.substring(0, commaIdx + 6);
     }
 
+    /**
+     * Gets the time a build was built
+     * @param fullDateBuilt
+     * @param commaIdx
+     * @return
+     */
     public static String getTime(String fullDateBuilt, int commaIdx){
 
         return fullDateBuilt.substring(commaIdx + 7);
     }
 
+    /**
+     * Formats the date for easy comparison
+     * @param fullDateBuilt
+     * @return
+     */
     public static String formatDate(String fullDateBuilt){
         if(fullDateBuilt.equals("N/A")){
             return "0:0:0";
@@ -195,6 +213,11 @@ public class Build {
         return month + ":" + splitDate[1].substring(0, splitDate[1].length()-1) + ":" + splitDate[2];
     }
 
+    /**
+     * Formats the time into 24 hour clock for easy comparison
+     * @param time
+     * @return
+     */
     public static String formatTime(String time){
         if(time.indexOf("PM") > 0){
             String[] splitTime = time.split(":");
@@ -220,6 +243,11 @@ public class Build {
 
     }
 
+    /**
+     * Given the month, assigns a numerical equivalent for comparison
+     * @param date
+     * @return
+     */
     public static int getMonthNum(String date){
         if (date.indexOf("Jan") >= 0) {
             return 1;
@@ -261,4 +289,13 @@ public class Build {
             return -1;
         }
     }
+
+
+    /*public static void main(String[] args){
+        Build b1 = new Build(1234, "jeffrey", "Oct 16, 2015 2:46:48 PM", true);
+        Build b2 = new Build(5678, "asdf", "Oct 11, 2015 2:46:48 PM", false);
+
+        boolean is = b1.isMostRecent(b2);
+        System.out.print("df");
+    }*/
 }
