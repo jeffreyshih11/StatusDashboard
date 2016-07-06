@@ -74,7 +74,7 @@ public class CreateXML {
         environment.appendChild(getElements(doc, environment, "Builder", build.builder));
         environment.appendChild(getElements(doc, environment, "Date", build.dateBuiltFull));
         environment.appendChild(getElements(doc, environment, "Revision", Integer.toString(build.revision)));
-        environment.appendChild(getElements(doc, environment, "Status", build.buildStatus));
+        environment.appendChild(getElements(doc, environment, "BuildStatus", build.buildStatus));
         environment.appendChild(getElements(doc, environment, "SmokeTestPass", build.smokeTestPass));
         return environment;
     }
