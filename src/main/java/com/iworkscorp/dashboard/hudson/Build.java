@@ -12,7 +12,7 @@ public class Build {
     String dateBuiltFull;
     String dateBuilt;
     String timeBuilt;
-    boolean status;
+    String buildStatus;
     boolean smokeTestRun;
     boolean smokeTestPass;
 
@@ -23,20 +23,20 @@ public class Build {
         this.dateBuiltFull = "";
         this.dateBuilt = "";
         this.timeBuilt = "";
-        this.status = false;
+        buildStatus = "";
         this.smokeTestRun = false;
         this.smokeTestPass = false;
 
 
     }
-    public Build(int revision, String builder, String dateBuiltFull, boolean status){
+    public Build(int revision, String builder, String dateBuiltFull, String status){
         this.revision = revision;
         this.builder = builder;
         this.dateBuiltFull = dateBuiltFull;
         this.dateBuilt = getDate(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
         this.timeBuilt = getTime(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
 
-        this.status = status;
+        this.buildStatus = status;
         this.smokeTestRun = false;
         this.smokeTestPass = false;
 
@@ -56,7 +56,7 @@ public class Build {
             this.dateBuiltFull = "N/A";
             this.dateBuilt = "N/A";
             this.timeBuilt = "N/A";
-            this.status = false;
+            buildStatus = "N/A";
         }
 
         else {
@@ -78,7 +78,13 @@ public class Build {
             this.timeBuilt = getTime(this.dateBuiltFull, getCommaIdx(this.dateBuiltFull));
 
 
-            this.status = false;
+            int buildingIdx = pageSource.indexOf("Progress:");
+            if(buildingIdx > 0){
+                buildStatus = "building";
+            }
+            else{
+                buildStatus = "true";
+            }
         }
 
         this.smokeTestRun = false;
@@ -86,9 +92,9 @@ public class Build {
 
     }
 
-    public void setStatus(boolean status){
-        this.status = status;
-    }
+    /*public void setStatus(boolean status){
+        buildStatus = status;
+    }*/
 
     public void setSmokeTestRun(boolean smokeTestRun){
         this.smokeTestRun = smokeTestRun;
