@@ -29,11 +29,11 @@
         String BaseBuild = "successful";
 
         if (BaseBuild.equals("successful")) {%>
-        <center><img src="LightG.jpg" height="30" width="30"/></center>
+        <center><img src="LightG.jpg" title ="Most recent baseline build was successful" height="30" width="30"/></center>
         <% } else if (BaseBuild.equals("building")) { %>
-        <center><img src="LightY.png" height="30" width="30"/></center>
+        <center><img src="LightY.png" title ="Baseline is currently building" height="30" width="30"/></center>
         <% } else { %>
-        <center><img src="LightR.jpg" height="30" width="30"/></center>
+        <center><img src="LightR.jpg" title ="Most recent baseline build failed" height="30" width="30"/></center>
         <% }
         %>
 
@@ -61,11 +61,11 @@
         String DemoBuild = "successful";
 
         if (DemoBuild.equals("successful")) {%>
-        <center><img src="LightG.jpg" height="30" width="30"/></center>
+        <center><img src="LightG.jpg" title ="Most recent demo build was successful" height="30" width="30"/></center>
         <% } else if (DemoBuild.equals("building")) { %>
-        <center><img src="LightY.png" height="30" width="30"/></center>
+        <center><img src="LightY.png" title ="Demo is currently building" height="30" width="30"/></center>
         <% } else { %>
-        <center><img src="LightR.jpg" height="30" width="30"/></center>
+        <center><img src="LightR.jpg" title="Most recent demo build failed" height="30" width="30"/></center>
         <% }
         %></td>
       <td><%
@@ -92,11 +92,11 @@
         String DevBuild = "red";
 
         if (DevBuild.equals("successful")) {%>
-        <center><img src="LightG.jpg" height="30" width="30"/></center>
+        <center><img src="LightG.jpg" title ="Most recent dev build was successful"height="30" width="30"/></center>
         <% } else if (DevBuild.equals("building")) { %>
-        <center><img src="LightY.png" height="30" width="30"/></center>
+        <center><img src="LightY.png" title ="Dev is currently building" height="30" width="30"/></center>
         <% } else { %>
-        <center><img src="LightR.jpg" height="30" width="30"/></center>
+        <center><img src="LightR.jpg" title ="Most recent dev build failed" height="30" width="30"/></center>
         <% }
         %></td>
       <td><%
@@ -122,11 +122,11 @@
       <td><%
         String GatBuild = "building";
         if (GatBuild.equals("successful")) {%>
-        <center><img src="LightG.jpg" height="30" width="30"/></center>
+        <center><img src="LightG.jpg" title ="Most recent GAT build was successful" height="30" width="30"/></center>
         <% } else if (GatBuild.equals("building")) { %>
-        <center><img src="LightY.png" height="30" width="30"/></center>
+        <center><img src="LightY.png" title ="GAT is currently building" height="30" width="30"/></center>
         <% } else { %>
-        <center><img src="LightR.jpg" height="30" width="30"/></center>
+        <center><img src="LightR.jpg" title ="Most recent GAT build failed" height="30" width="30"/></center>
         <% }
         %></td>
       <td><%
@@ -152,11 +152,11 @@
         String QaBuild = "successful";
 
         if (QaBuild.equals("successful")) {%>
-        <center><img src="LightG.jpg" height="30" width="30"/></center>
+        <center><img src="LightG.jpg" title ="Most recent QA build was successful" height="30" width="30"/></center>
         <% } else if (QaBuild.equals("building")) { %>
-        <center><img src="LightY.png" height="30" width="30"/></center>
+        <center><img src="LightY.png" title ="QA is currently building" height="30" width="30"/></center>
         <% } else { %>
-        <center><img src="LightR.jpg" height="30" width="30"/></center>
+        <center><img src="LightR.jpg" title ="Most recent QA build failed" height="30" width="30"/></center>
         <% }
         %></td>
       <td><%
@@ -184,13 +184,13 @@
           String UatBuild = "red";
 
           if(UatBuild.equals("successful")){%>
-        <center><img src="LightG.jpg" height = "30" width = "30"/></center>
+        <center><img src="LightG.jpg" title ="Most recent UAT build was successful" height = "30" width = "30"/></center>
         <% }
         else if(UatBuild.equals("building")){ %>
-        <center><img src="LightY.png" height = "30" width = "30"/></center>
+        <center><img src="LightY.png" title ="UAT is currently building" height = "30" width = "30"/></center>
         <% }
         else{ %>
-        <center><img src="LightR.jpg" height = "30" width = "30"/></center>
+        <center><img src="LightR.jpg" title ="Most recent UAT build failed" height = "30" width = "30"/></center>
         <% }
         %>
       </td>
