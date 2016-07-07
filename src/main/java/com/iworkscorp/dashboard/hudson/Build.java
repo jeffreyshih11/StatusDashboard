@@ -25,7 +25,7 @@ public class Build {
         this.dateBuiltFull = "";
         this.dateBuilt = "";
         this.timeBuilt = "";
-        buildStatus = "";
+        this.buildStatus = "";
         this.smokeTestRun = "";
         this.smokeTestPass = "";
 
