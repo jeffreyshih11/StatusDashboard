@@ -12,7 +12,8 @@
   DocumentBuilder db = dbf.newDocumentBuilder();
 
   //Document doc = db.parse("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\DashboardModule\\web\\name.xml");
-  File xmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml");
+  //File xmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml");
+  File xmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\example.xml");
   Document doc = db.parse(xmlFile);
 
   NodeList Environment = doc.getElementsByTagName("Environment");
@@ -37,6 +38,7 @@
       <th>Builder</th>
       <th>Date</th>
       <th>Build Status</th>
+      <th>Smoke Test Status</th>
       <%--<th>Smoke Test Status</th>
       <th>Build Tag</th>--%>
     </tr>
@@ -74,6 +76,9 @@
         <center><img src="LightR.jpg" title="The most recent build failed" height="30" width="30"/></center>
         <% }
         %>
+      </td>
+      <td>
+        to be implemented
       </td>
 
     </tr>
