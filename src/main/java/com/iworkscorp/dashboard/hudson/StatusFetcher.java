@@ -45,6 +45,14 @@ public class StatusFetcher {
         ReusableFunctions.waitUntilElementExistsAndClick(By.xpath("//*[@id='loginForm']//input[@id='loginButton']"), 2000);
     }
 
+    /*
+     * Logs out of Hudson
+     */
+    public void logOut(){
+        driver.navigate().to(CONFIG.getProperty("baseURL") + "logout");
+        driver.close();
+    }
+
     public void connectToHudson() throws Exception {
 
         logIn();
@@ -59,6 +67,8 @@ public class StatusFetcher {
         for(Build b: mostRecentBuilds){
             System.out.println(b.environment + ":: " + b.builder + ":  " + b.dateBuiltFull);
         }
+
+        logOut();
 
         //System.out.println("dfa");
     }
