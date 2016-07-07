@@ -1,4 +1,8 @@
-<%@ page contentType="text/html; charset=utf-8" language="java" import="javax.xml.parsers.DocumentBuilderFactory,javax.xml.parsers.DocumentBuilder,org.w3c.dom.*" errorPage="" %>
+<%@ page contentType="text/html; charset=utf-8" language="java"
+         import="org.w3c.dom.Document,org.w3c.dom.NodeList,javax.xml.parsers.DocumentBuilder" errorPage="" %>
+<%@ page import="javax.xml.parsers.DocumentBuilderFactory" %>
+<%@ page import="java.io.File" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 
 <link rel="stylesheet" type="text/css" href="Style.css" title="gray">
 
@@ -8,7 +12,8 @@
   DocumentBuilder db = dbf.newDocumentBuilder();
 
   //Document doc = db.parse("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\DashboardModule\\web\\name.xml");
-  Document doc = db.parse("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml");
+  File xmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml");
+  Document doc = db.parse(xmlFile);
 
   NodeList Environment = doc.getElementsByTagName("Environment");
   NodeList Revision = doc.getElementsByTagName("Revision");
@@ -82,12 +87,16 @@
 
 
 <p></p>
+<center><p> Last updated: <% SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+  out.print(formattedDate.format(xmlFile.lastModified()));
+%></p></center>
 <p></p>
 
 <center><img src="logo.jpg" alt="logo" /></center>
 
 <p></p>
 <p></p>
+
 
 <hr color="#ff7302" width="80%">
 
