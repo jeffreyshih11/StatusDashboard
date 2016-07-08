@@ -51,7 +51,65 @@
     <tr>
 
       <td>
-        <%= Environment.item(i).getAttributes().getNamedItem("name").getNodeValue()%>
+        <%= Environment.item(i).getAttributes().getNamedItem("name").getNodeValue()
+        %>
+          <% if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("Baseline")){ %>
+         <form> <p align="center"><b>Select a Site </b>
+            <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+              <option value="">Select one</option>
+              <option value=BASELINE_CP_Url>JVS</option>
+              <option value=BASELINE_CATS_Url>CATS</option>
+              <option value=BASELINE_ServiceDesk_Url>SD</option></select>
+          </p></form>
+
+        <% }
+            else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEMO")){ %>
+        <form><p align="center"><b>Select a Site </b>
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+            <option value="">Select one</option>
+            <option value=DEMO_CP_Url>JVS</option>
+            <option value=DEMO_CATS_Url>CATS</option>
+            <option value=DEMO_ServiceDesk_Url>SD</option></select>
+        </p></form>
+
+        <% }
+        else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEV")){ %>
+        <form><p align="center"><b>Select a Site </b>
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+            <option value="">Select one</option>
+            <option value=DEV_CP_Url>JVS</option>
+            <option value=DEV_CATS_Url>CATS</option>
+            <option value=DEV_ServiceDesk_Url>SD</option></select>
+        </p></form>
+        <% }
+        else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("GAT")){ %>
+        <form><p align="center"><b>Select a Site </b>
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+            <option value="">Select one</option>
+            <option value=GAT_CP_Url>DEMO</option>
+            <option value=GAT_CATS_Url>Yahoo</option>
+            <option value=GAT_ServiceDesk_Url>Google</option></select>
+        </p></form>
+        <% }
+        else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("QA")){ %>
+        <form><p align="center"><b>Select a Site </b>
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+            <option value="">Select one</option>
+            <option value=QA_CP_Url>DEMO</option>
+            <option value=QA_CATS_Url>Yahoo</option>
+            <option value=QA_ServiceDesk_Url>Google</option></select>
+        </p></form>
+        <% }
+        else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("UAT")){ %>
+        <form><p align="center"><b>Select a Site </b>
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+            <option value="">Select one</option>
+            <option value=UAT_CP_Url>DEMO</option>
+            <option value=UAT_CATS_Url>Yahoo</option>
+            <option value=UAT_ServiceDesk_Url>Google</option></select>
+        </p></form>
+
+        <% } %>
       </td>
       <td>
         <%= Revision.item(i).getFirstChild().getNodeValue()%>
@@ -97,12 +155,14 @@
 %></p></center>
 <p></p>
 
-<center><img src="logo.jpg" alt="logo" /></center>
+<center><img src="logo.jpg" alt="logo"/></center>
 
 <p></p>
 <p></p>
 
 
 <hr color="#ff7302" width="80%">
+
+<center><a href="https://office.iworkscorp.com/hudson/login?from=%2Fhudson%2F">Connect to Hudson</a></center>
 
 </html>
