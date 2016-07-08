@@ -1,5 +1,5 @@
-import com.iworkscorp.dashboard.hudson.StatusFetcher;
-import com.iworkscorp.dashboard.hudson.TestBase;
+package com.iworkscorp.dashboard.hudson;
+
 import org.junit.Test;
 
 /**
