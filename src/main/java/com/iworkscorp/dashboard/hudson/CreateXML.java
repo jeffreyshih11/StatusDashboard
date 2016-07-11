@@ -57,13 +57,14 @@ public class CreateXML {
             DOMSource source = new DOMSource(doc);
 
             //write to console or file
-            StreamResult console = new StreamResult(System.out);
+            //StreamResult console = new StreamResult(System.out);
             //StreamResult file = new StreamResult(new File("C:\\Users\\avillaflor\\Documents\\GitHub\\StatusDashboard\\example.xml"));
             StreamResult file = new StreamResult(new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml"));
             //write data
             //transformer.transform(source, console);
             transformer.transform(source, file);
-            System.out.println("DONE");
+
+            /*System.out.println("DONE");*/
 
         } catch (Exception e) {
             e.printStackTrace();
