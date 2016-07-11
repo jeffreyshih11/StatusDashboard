@@ -6,9 +6,8 @@ import org.w3c.dom.Node;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
@@ -30,12 +29,17 @@ public class CreateXML {
 
     }
 
-    public void createXML(ArrayList<Build> builds) {
+    /*
+     * creates the XML document that the HTML will be read from
+     * @param builds the ArrayList of each environment to be translated into the XML
+     */
+    public Document createXML(ArrayList<Build> builds) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+        Document doc = null;
         DocumentBuilder dBuilder;
         try {
             dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.newDocument();
+            doc = dBuilder.newDocument();
             //add elements to Document
             Element rootElement =
                     doc.createElementNS("", "Environments");
@@ -44,36 +48,57 @@ public class CreateXML {
 
 
 
-
-            for(int i = 0; i < builds.size(); i++){
+            /*
+             * Parses through the ArrayList for each Build object and creates
+             * an environment Element to hold all of the data
+             */
+            for (int i = 0; i < builds.size(); i++) {
                 Element environment = doc.createElement("Environment");
                 environment.setAttribute("name", builds.get(i).environment);
+                //calls the getBuild method to append each of the variables in the Build object
                 rootElement.appendChild(getBuild(doc, builds.get(i), environment));
             }
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+        return doc;
+    }
 
-
-            //for output to file, console
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            //for pretty print
+    public void writeToXML(Document doc){
+        //for output to file, console
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = null;
+        try {
+            transformer = transformerFactory.newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             DOMSource source = new DOMSource(doc);
 
             //write to console or file
             //StreamResult console = new StreamResult(System.out);
             //StreamResult file = new StreamResult(new File("C:\\Users\\avillaflor\\Documents\\GitHub\\StatusDashboard\\example.xml"));
-            StreamResult file = new StreamResult(new File(System.getProperty("user.dir") + "\\environmentStatus.xml"));
+            StreamResult file = new StreamResult(new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml"));
             //write data
             //transformer.transform(source, console);
             transformer.transform(source, file);
 
             /*System.out.println("DONE");*/
 
-        } catch (Exception e) {
+        } catch (TransformerConfigurationException e) {
+            e.printStackTrace();
+        } catch (TransformerException e) {
             e.printStackTrace();
         }
+        //for pretty print
+
+
     }
 
+    /*
+     *@param doc the document that the XML is being written in
+     *@param environment the Element that will hold the builder, date, revision, and build status of each build
+     *@param build the Build of the environment being accessed
+     *@return the node that will hold the Element containing all of the build information
+     */
     private static Node getBuild(Document doc, Build build, Element environment){
         environment.appendChild(getElements(doc, environment, "Builder", build.builder));
         environment.appendChild(getElements(doc, environment, "Date", build.dateBuiltFull));
