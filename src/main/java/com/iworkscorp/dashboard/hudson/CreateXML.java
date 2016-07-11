@@ -21,10 +21,12 @@ public class CreateXML {
         StatusFetcher statuses = new StatusFetcher();
         TestBase.initialize();
         statuses.initialize();
-        statuses.connectToHudson();
-        ArrayList<Build> builds = statuses.mostRecentBuilds;
-        CreateXML create = new CreateXML();
-        create.createXML(builds);
+        if(statuses.collectFromHudson()) {
+            ArrayList<Build> builds = statuses.getAllMostRecents();
+            CreateXML create = new CreateXML();
+            create.createXML(builds);
+        }
+
 
     }
 

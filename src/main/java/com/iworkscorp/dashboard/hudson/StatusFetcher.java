@@ -16,13 +16,12 @@ public class StatusFetcher {
 
 
 
-    ArrayList<Build> baselineBuilds = new ArrayList<Build>();
-    ArrayList<Build> demoBuilds = new ArrayList<Build>();
-    ArrayList<Build> devBuilds = new ArrayList<Build>();
-    ArrayList<Build> gatBuilds = new ArrayList<Build>();
-    ArrayList<Build> qaBuilds = new ArrayList<Build>();
-    ArrayList<Build> uatBuilds = new ArrayList<Build>();
-    ArrayList<Build> mostRecentBuilds = new ArrayList<Build>();
+    ArrayList<Build> baselineBuilds;
+    ArrayList<Build> demoBuilds;
+    ArrayList<Build> devBuilds;
+    ArrayList<Build> gatBuilds;
+    ArrayList<Build> qaBuilds;
+    ArrayList<Build> uatBuilds;
 
     public static Properties CONFIG = null;
     public static final String CONFIG_PATH = "\\src\\main\\resources\\";
@@ -36,7 +35,7 @@ public class StatusFetcher {
     /**
      * Logs into Hudson
      */
-    public void logIn(){
+    public boolean logIn(){
         System.out.println(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
         driver.navigate().to(CONFIG.getProperty("baseURL") + "login?from=%2Fhudson");
 
@@ -44,6 +43,8 @@ public class StatusFetcher {
         ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_username']"), CONFIG.getProperty("username"));
         ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_password']"), CONFIG.getProperty("password"));
         ReusableFunctions.waitUntilElementExistsAndClick(By.xpath("//*[@id='loginForm']//input[@id='loginButton']"), 2000);
+
+        return true;
     }
 
     /*
@@ -54,22 +55,22 @@ public class StatusFetcher {
         driver.close();
     }
 
-    public void connectToHudson() throws Exception {
+    public boolean collectFromHudson() throws Exception {
 
-        logIn();
+        if(logIn()) {
 
-        BuildLinks.initialize();
-        BuildLinks.populate_ALL_Links_Array();
-        BuildLinks.makeBuildLinks();
-        createAllBuilds();
-
-        getAllMostRecents();
-
-        for(Build b: mostRecentBuilds){
-            System.out.println(b.environment + ":: " + b.builder + ":  " + b.dateBuiltFull);
+            BuildLinks.initialize();
+            BuildLinks.populate_ALL_Links_Array();
+            BuildLinks.makeBuildLinks();
+            createAllBuilds();
         }
 
+        /*for(Build b: mostRecentBuilds){
+            System.out.println(b.environment + ":: " + b.builder + ":  " + b.dateBuiltFull);
+        }*/
+
         logOut();
+        return true;
 
         //System.out.println("dfa");
     }
@@ -77,7 +78,8 @@ public class StatusFetcher {
     /**
      * Gets the most recent build from each environment
      */
-    private void getAllMostRecents() {
+    public ArrayList<Build> getAllMostRecents() {
+        ArrayList<Build> mostRecentBuilds = new ArrayList<>();
 
         mostRecentBuilds.add(findMostRecentinArray(baselineBuilds));
         mostRecentBuilds.add(findMostRecentinArray(demoBuilds));
@@ -85,6 +87,8 @@ public class StatusFetcher {
         mostRecentBuilds.add(findMostRecentinArray(gatBuilds));
         mostRecentBuilds.add(findMostRecentinArray(qaBuilds));
         mostRecentBuilds.add(findMostRecentinArray(uatBuilds));
+
+        return mostRecentBuilds;
 
     }
 
@@ -107,23 +111,24 @@ public class StatusFetcher {
      * Creates build objects for all environments and build tags
      */
     private void createAllBuilds(){
-        createBuildObjects(baselineBuilds, BuildLinks.BaseLineBuildLinks);
-        createBuildObjects(demoBuilds, BuildLinks.DemoBuildLinks);
-        createBuildObjects(devBuilds, BuildLinks.DevBuildLinks);
-        createBuildObjects(gatBuilds, BuildLinks.GATBuildLinks);
-        createBuildObjects(qaBuilds, BuildLinks.QABuildLinks);
-        createBuildObjects(uatBuilds, BuildLinks.UATBuildLinks);
+        baselineBuilds = createBuildObjects(BuildLinks.BaseLineBuildLinks);
+        demoBuilds = createBuildObjects(BuildLinks.DemoBuildLinks);
+        devBuilds = createBuildObjects(BuildLinks.DevBuildLinks);
+        gatBuilds = createBuildObjects(BuildLinks.GATBuildLinks);
+        qaBuilds = createBuildObjects(BuildLinks.QABuildLinks);
+        uatBuilds = createBuildObjects(BuildLinks.UATBuildLinks);
     }
 
     /**
      * Creates build objects for each build tag
-     * @param environmentBuilds
      * @param buildURLS
      */
-    private void createBuildObjects(ArrayList<Build> environmentBuilds, ArrayList<String> buildURLS){
+    private ArrayList<Build> createBuildObjects(ArrayList<String> buildURLS){
+        ArrayList<Build> environmentBuilds = new ArrayList<>();
         for(String buildURL: buildURLS){
             Build build = new Build(buildURL);
             environmentBuilds.add(build);
         }
+        return environmentBuilds;
     }
 }
