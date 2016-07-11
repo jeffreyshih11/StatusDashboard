@@ -14,8 +14,8 @@
   DocumentBuilder db = dbf.newDocumentBuilder();
 
   //Document doc = db.parse("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\DashboardModule\\web\\name.xml");
-  File xmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml");
-  //File xmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\example.xml");
+  //File xmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml");
+  File xmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\example.xml");
   Document doc = db.parse(xmlFile);
 
   NodeList Environment = doc.getElementsByTagName("Environment");
@@ -28,7 +28,7 @@
   final String CONFIG_PATH = "//src//main//resources//data//";
   CONFIG = new Properties();
   //FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
-  FileInputStream fn = new FileInputStream("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
+  FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
   CONFIG.load(fn);
 
 %>
@@ -41,7 +41,7 @@
 <p></p>
 
 <center>
-  <table>
+  <table style="width:800px">
     <tr>
       <th>Environment</th>
       <th>Revision</th>
@@ -61,11 +61,11 @@
     <tr>
 
       <td>
-        <%= Environment.item(i).getAttributes().getNamedItem("name").getNodeValue()
-        %>
+        <b><%= Environment.item(i).getAttributes().getNamedItem("name").getNodeValue()
+        %></b>
           <% if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("Baseline")){ %>
-         <form> <p align="center"><b>Select a Site </b>
-            <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+         <form> <p align="left">Go to Site
+            <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
               <option value="">Select one</option>
               <option value=<%=CONFIG.getProperty("BASELINE_CP_Url")%>>JVS</option>
               <option value=<%=CONFIG.getProperty("BASELINE_CATS_Url")%>>CATS</option>
@@ -74,8 +74,8 @@
 
         <% }
             else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEMO")){ %>
-        <form><p align="center"><b>Select a Site </b>
-          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+        <form><p align="left">Go to Site
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
             <option value=<%=CONFIG.getProperty("DEMO_CP_Url")%>>JVS</option>
             <option value=<%=CONFIG.getProperty("DEMO_CATS_Url")%>>CATS</option>
@@ -84,8 +84,8 @@
 
         <% }
         else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEV")){ %>
-        <form><p align="center"><b>Select a Site </b>
-          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+        <form><p align="left">Go to Site
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
             <option value=<%=CONFIG.getProperty("DEV_CP_Url")%>>JVS</option>
             <option value=<%=CONFIG.getProperty("DEV_CATS_Url")%>>CATS</option>
@@ -93,30 +93,30 @@
         </p></form>
         <% }
         else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("GAT")){ %>
-        <form><p align="center"><b>Select a Site </b>
-          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+        <form><p align="left">Go to Site
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
-            <option value=<%=CONFIG.getProperty("GAT_CP_Url")%>>DEMO</option>
-            <option value=<%=CONFIG.getProperty("GAT_CATS_Url")%>>Yahoo</option>
-            <option value=<%=CONFIG.getProperty("GAT_ServiceDesk_Url")%>>Google</option></select>
+            <option value=<%=CONFIG.getProperty("GAT_CP_Url")%>>JVS</option>
+            <option value=<%=CONFIG.getProperty("GAT_CATS_Url")%>>CATS</option>
+            <option value=<%=CONFIG.getProperty("GAT_ServiceDesk_Url")%>>SD</option></select>
         </p></form>
         <% }
         else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("QA")){ %>
-        <form><p align="center"><b>Select a Site </b>
-          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+        <form><p align="left">Go to Site
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
-            <option value=<%=CONFIG.getProperty("QA_CP_Url")%>>DEMO</option>
-            <option value=<%=CONFIG.getProperty("QA_CATS_Url")%>>Yahoo</option>
-            <option value=<%=CONFIG.getProperty("QA_ServiceDesk_Url")%>>Google</option></select>
+            <option value=<%=CONFIG.getProperty("QA_CP_Url")%>>JVS</option>
+            <option value=<%=CONFIG.getProperty("QA_CATS_Url")%>>CATS</option>
+            <option value=<%=CONFIG.getProperty("QA_ServiceDesk_Url")%>>SD</option></select>
         </p></form>
         <% }
         else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("UAT")){ %>
-        <form><p align="center"><b>Select a Site </b>
-          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: #0000FF" size="1" name="test">
+        <form><p align="left">Go to Site
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
-            <option value=<%=CONFIG.getProperty("UAT_CP_Url")%>>DEMO</option>
-            <option value=<%=CONFIG.getProperty("UAT_CATS_Url")%>>Yahoo</option>
-            <option value=<%=CONFIG.getProperty("UAT_ServiceDesk_Url")%>>Google</option></select>
+            <option value=<%=CONFIG.getProperty("UAT_CP_Url")%>>JVS</option>
+            <option value=<%=CONFIG.getProperty("UAT_CATS_Url")%>>CATS</option>
+            <option value=<%=CONFIG.getProperty("UAT_ServiceDesk_Url")%>>SD</option></select>
         </p></form>
 
         <% } %>
