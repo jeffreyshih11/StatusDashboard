@@ -25,7 +25,7 @@ public class StatusFetcher {
     ArrayList<Build> mostRecentBuilds = new ArrayList<Build>();
 
     public static Properties CONFIG = null;
-    public static final String CONFIG_PATH = "//src//main//resources//";
+    public static final String CONFIG_PATH = "\\src\\main\\resources\\";
 
     public void initialize() throws IOException {
         CONFIG = new Properties();
@@ -37,6 +37,7 @@ public class StatusFetcher {
      * Logs into Hudson
      */
     public void logIn(){
+        System.out.println(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
         driver.navigate().to(CONFIG.getProperty("baseURL") + "login?from=%2Fhudson");
 
         ReusableFunctions.waitUntilElementExistsAndClick(By.xpath("//*[text()='log in']"), 1500);

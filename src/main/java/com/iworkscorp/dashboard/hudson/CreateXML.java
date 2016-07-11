@@ -25,6 +25,7 @@ public class CreateXML {
         ArrayList<Build> builds = statuses.mostRecentBuilds;
         CreateXML create = new CreateXML();
         create.createXML(builds);
+
     }
 
     public void createXML(ArrayList<Build> builds) {
@@ -59,7 +60,7 @@ public class CreateXML {
             //write to console or file
             //StreamResult console = new StreamResult(System.out);
             //StreamResult file = new StreamResult(new File("C:\\Users\\avillaflor\\Documents\\GitHub\\StatusDashboard\\example.xml"));
-            StreamResult file = new StreamResult(new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml"));
+            StreamResult file = new StreamResult(new File(System.getProperty("user.dir") + "\\environmentStatus.xml"));
             //write data
             //transformer.transform(source, console);
             transformer.transform(source, file);

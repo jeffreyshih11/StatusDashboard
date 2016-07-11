@@ -11,7 +11,7 @@ import java.util.Properties;
 public class BuildLinks {
 
     public static Properties CONFIG = null;
-    public static final String CONFIG_PATH = "//src//main//resources//";
+    public static final String CONFIG_PATH = "\\src\\main\\resources\\";
 
     private static String[] Environments = {"Baseline", "DEMO", "DEV", "GAT", "QA", "UAT"};
     private static String[] BaseLine_BuildTags;
