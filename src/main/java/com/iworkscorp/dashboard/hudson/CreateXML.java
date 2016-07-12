@@ -33,7 +33,7 @@ public class CreateXML {
      * creates the XML document that the HTML will be read from
      * @param builds the ArrayList of each environment to be translated into the XML
      */
-    public Document createXML(ArrayList<Build> builds) {
+    public Document createXML(ArrayList environments) {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         Document doc = null;
         DocumentBuilder dBuilder;
@@ -48,16 +48,34 @@ public class CreateXML {
 
 
 
-            /*
-             * Parses through the ArrayList for each Build object and creates
-             * an environment Element to hold all of the data
-             */
-            for (int i = 0; i < builds.size(); i++) {
-                Element environment = doc.createElement("Environment");
-                environment.setAttribute("name", builds.get(i).environment);
-                //calls the getBuild method to append each of the variables in the Build object
-                rootElement.appendChild(getBuild(doc, builds.get(i), environment));
+            if (environments.get(0).getClass() == Build.class){
+                ArrayList<Build> builds = (ArrayList<Build>) environments;
+                /*
+                * Parses through the ArrayList for each Build object and creates
+                * an environment Element to hold all of the data
+                */
+                for (int i = 0; i < builds.size(); i++) {
+                    Element environment = doc.createElement("Environment");
+                    environment.setAttribute("name", builds.get(i).environment);
+                    //calls the getBuild method to append each of the variables in the Build object
+                    rootElement.appendChild(getBuild(doc, builds.get(i), environment));
+                }
             }
+            else if (environments.get(0).getClass() == SmokeTest.class){
+                ArrayList<SmokeTest> smokeStatus = (ArrayList<SmokeTest>) environments;
+                /*
+                * Parses through the ArrayList for each Build object and creates
+                * an environment Element to hold all of the data
+                */
+                for (int i = 0; i < smokeStatus.size(); i++) {
+                    Element environment = doc.createElement("Environment");
+                    environment.setAttribute("name", smokeStatus.get(i).environment);
+                    //calls the getBuild method to append each of the variables in the Build object
+                    rootElement.appendChild(getStatus(doc, smokeStatus.get(i), environment));
+                }
+            }
+
+
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
@@ -76,7 +94,7 @@ public class CreateXML {
             //write to console or file
             //StreamResult console = new StreamResult(System.out);
             //StreamResult file = new StreamResult(new File("C:\\Users\\avillaflor\\Documents\\GitHub\\StatusDashboard\\example.xml"));
-            StreamResult file = new StreamResult(new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml"));
+            StreamResult file = new StreamResult(new File(System.getProperty("user.dir") + "\\environmentStatus.xml"));
             //write data
             //transformer.transform(source, console);
             transformer.transform(source, file);
@@ -106,6 +124,11 @@ public class CreateXML {
         environment.appendChild(getElements(doc, environment, "BuildStatus", build.buildStatus));
         environment.appendChild(getElements(doc, environment, "SmokeTestPass", build.smokeTestPass));
         return environment;
+    }
+
+    private static Node getStatus(Document doc, SmokeTest smokeTest, Element environment) {
+        environment.appendChild(getElements(doc, environment, "Revision", smokeTest.revision));
+        environment.appendChild(getElements(doc, environment, "SmokeStatus", smokeTest.smokeStatus));
     }
 
     //utility method to create text node
