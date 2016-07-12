@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class CreateXML {
 
-    public static void main(String[] args) throws Exception {
+   /* public static void main(String[] args) throws Exception {
         StatusFetcher statuses = new StatusFetcher();
         TestBase.initialize();
         statuses.initialize();
@@ -27,7 +27,7 @@ public class CreateXML {
         }
 
 
-    }
+    }*/
 
     /*
      * creates the XML document that the HTML will be read from
@@ -69,9 +69,9 @@ public class CreateXML {
                 */
                 for (int i = 0; i < smokeStatus.size(); i++) {
                     Element environment = doc.createElement("Environment");
-                    environment.setAttribute("name", smokeStatus.get(i).environment);
+                    //environment.setAttribute("name", smokeStatus.get(i).environment);
                     //calls the getBuild method to append each of the variables in the Build object
-                    rootElement.appendChild(getStatus(doc, smokeStatus.get(i), environment));
+                    //rootElement.appendChild(getStatus(doc, smokeStatus.get(i), environment));
                 }
             }
 
@@ -126,10 +126,10 @@ public class CreateXML {
         return environment;
     }
 
-    private static Node getStatus(Document doc, SmokeTest smokeTest, Element environment) {
+    /*private static Node getStatus(Document doc, SmokeTest smokeTest, Element environment) {
         environment.appendChild(getElements(doc, environment, "Revision", smokeTest.revision));
         environment.appendChild(getElements(doc, environment, "SmokeStatus", smokeTest.smokeStatus));
-    }
+    }*/
 
     //utility method to create text node
     private static Node getElements(Document doc, Element element, String name, String value) {

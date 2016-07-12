@@ -37,7 +37,7 @@ public class SmokeTest extends TestBase {
     String lastName = null;
     long startTime;
     long endTime;
-    private Random random;
+    private Random random = new Random();
 
 
     public static class UserInfo {
@@ -132,53 +132,100 @@ public class SmokeTest extends TestBase {
 
 
     //ALL THE DIFFERENT ENVIORNMENT METHODS
-    @Test
+
     //DEV
-    public void environmentValidationDEV() throws Exception{
-        environmentValidation("DEV");
+    public boolean environmentValidationDEV() {
+        try {
+            return environmentValidation("DEV");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    @Test
+
     //QA
-    public void environmentValidationQA() throws Exception{
-        environmentValidation("QA");
+    public boolean environmentValidationQA() {
+        try {
+            return environmentValidation("QA");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    @Test
+
     //GAT
-    public void environmentValidationGAT() throws Exception{
-        environmentValidation("GAT");
+    public boolean environmentValidationGAT() {
+        try {
+            return environmentValidation("GAT");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    @Test
+
     //LOCAL
-    public void environmentValidationLOCAL() throws Exception{
-        environmentValidation("LOCAL");
+    public boolean environmentValidationLOCAL() {
+        try {
+            return environmentValidation("LOCAL");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    @Test
+
     //BASELINE
-    public void environmentValidationBASELINE() throws Exception{
-        environmentValidation("BASELINE");
+    public boolean environmentValidationBASELINE() {
+        try {
+            return environmentValidation("BASELINE");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    @Test
+
     //DEMO
-    public void environmentValidationDEMO() throws Exception{
-        environmentValidation("DEMO");
+    public boolean environmentValidationDEMO() {
+        try {
+            return environmentValidation("DEMO");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
-    @Test
+
     //UAT
-    public void environmentValidationUAT() throws Exception{
-        environmentValidation("UAT");
+    public boolean environmentValidationUAT() {
+        try {
+            return environmentValidation("UAT");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     //HELPER method to run each application
-    public void environmentValidation(String env) throws Exception{
+    public boolean environmentValidation(String env) {
         //JVSsmoke(env);
-        CATSsmoke(env, JVSsmoke(env));
-        serviceDeskSmoke(env);
+        try {
+            if(CATSsmoke(env, JVSsmoke(env))) {
+                if(!serviceDeskSmoke(env)){
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 
@@ -193,6 +240,13 @@ public class SmokeTest extends TestBase {
         userInfo.fName = "Environment";
         userInfo.lName = "Confirmation";
         userInfo.ssn = getSsn();
+
+        //check SSN is valid
+        SSNValidator ssnValidator = new SSNValidator();
+        while(!ssnValidator.isSSNValid(userInfo.ssn)) {
+            userInfo.ssn = getSsn();
+        }
+
         jvsreusable.loginToJvsAsOneEnv(env);
         new JVSCreateSubject().createSubject(userInfo);
         jvsreusable.subjectSearch(userInfo.ssn);
@@ -208,11 +262,12 @@ public class SmokeTest extends TestBase {
      * @param userInfo
      * @throws Exception
      */
-    public void CATSsmoke(String env, UserInfo userInfo) throws Exception{
+    public boolean CATSsmoke(String env, UserInfo userInfo) throws Exception{
         reusable.loginToCATSasOneEnv(env);
         reusable.createCaseForSubject(userInfo.ssn,"//*[@id='createCaseForm:selectDivisionMenu_panel']/div/ul/li[text()='Division D (Air Force)']" /*"/[@id='createCaseForm:selectDivisionMenu_panel']/div/ul/li[@data-label='Division B (Army)']"*/, CATSProperties.CaseTypeConfedential.getProperty(), CATSProperties.SelectSMO.getProperty(), CATSProperties.InvestigationSSBI.getProperty());
         com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.xpath(CATSProperties.Doc_Tab.getProperty()));
         reusable.docUpload("//*/input[@type='file']", "C:\\Users\\jshih\\Documents\\pii_certificate.pdf", "COI", "pii_certificate", "description");
+        return true;
     }
 
     /**
@@ -220,7 +275,7 @@ public class SmokeTest extends TestBase {
      * @param env
      * @throws Exception
      */
-    public void serviceDeskSmoke(String env) throws Exception{
+    public boolean serviceDeskSmoke(String env) throws Exception{
         //driver.navigate().to(CONFIG.getProperty("ServiceDesk_Url"));
         //ReusableFunctions.waitAndLoginWithUser("1");
         loginToSDasOneEnv(env);
@@ -231,6 +286,8 @@ public class SmokeTest extends TestBase {
         com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:2:j_id_dc_toggler"));
         WebElement empty = com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndFindBy(By.id("majorTabPanel:eaiPropertyDataGridId:3:propertiesIdTable:0:propertiesIdeaipropKey1"));
         //System.out.print("SDf");
+        driver.close();
+        return true;
     }
 
 
@@ -755,3 +812,7 @@ public class SmokeTest extends TestBase {
 //		System.out.println("Result:The deactivated organization is no longer searchable -TEST PASS \n");
     }
 }
+
+
+
+
