@@ -24,6 +24,14 @@
   NodeList Date = doc.getElementsByTagName("Date");
   NodeList BuildStatus = doc.getElementsByTagName("BuildStatus");
 
+  File SmokeXmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\SmokeTest.xml");
+  Document SmokeDoc = db.parse(SmokeXmlFile);
+
+  NodeList SmokeEnvironment = SmokeDoc.getElementsByTagName("SmokeEnvironment");
+  NodeList SmokeRevision = SmokeDoc.getElementsByTagName("SmokeRevision");
+  NodeList SmokeStatus = SmokeDoc.getElementsByTagName("SmokeStatus");
+
+
   Properties CONFIG = null;
   final String CONFIG_PATH = "//src//main//resources//data//";
   CONFIG = new Properties();
@@ -146,7 +154,14 @@
         %>
       </td>
       <td>
-        to be implemented
+        <% if(SmokeStatus.item(i).getFirstChild().getNodeValue().equals("True")){ %>
+        <center><img src="LightG.jpg" title="The most recent smoke test succeeded" height="30" width="30"/></center>
+        <% }
+        else{ %>
+        <center><img src="LightR.jpg" title="The most recent smoke test failed" height="30" width="30"/></center>
+        <% } %>
+
+
       </td>
 
     </tr>
@@ -157,7 +172,6 @@
     %>
   </table>
 </center>
-
 
 <p></p>
 <center><p> Last updated: <% SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");

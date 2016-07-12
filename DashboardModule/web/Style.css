@@ -1,7 +1,6 @@
-table {
+style {
     border-style: solid;
     border-color: black;
-    width: 50%;
 }
 Body{
      background: linear-gradient(#e6e6e6, white);
