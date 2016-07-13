@@ -13,23 +13,19 @@ public class Controller {
     StatusFetcher statusFetcher;
     SmokeTest smokeTest;
     CreateXML xmlCreator;
+    static ArrayList<individualSmokeTest> results = new ArrayList<>();
 
     public Controller(){
         statusFetcher = new StatusFetcher();
-        /*try {
-            TestBase.initialize();
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-        smokeTest = new SmokeTest();*/
         xmlCreator = new CreateXML();
     }
 
     public static void main(String[] args) throws Exception {
         Controller con = new Controller();
-        con.generateBuildInfo();
+        //con.generateBuildInfo();
         con.generateSmokeDoc();
+        con.runSmokeTest(results.get(1));
+        con.overWriteSmokeDoc();
     }
 
     public Document generateBuildInfo() throws Exception {
@@ -45,7 +41,7 @@ public class Controller {
     }
 
     public ArrayList<NodeList> readBuildXML(Document doc){
-       
+
         ArrayList<NodeList> buildInfoList = new ArrayList<>();
         NodeList Environment = doc.getElementsByTagName("Environment");
         NodeList Revision = doc.getElementsByTagName("Revision");
@@ -65,16 +61,25 @@ public class Controller {
 
     public Document generateSmokeDoc(){
         Document smokeXML = null;
-        ArrayList<individualSmokeTest> smokeTests = createAllSmokeTestsandAdd();
-        if(smokeTests.size() != 0) {
-            smokeXML = xmlCreator.createXML(smokeTests);
+        results = createAllSmokeTestsandAdd();
+        if(results.size() != 0) {
+            smokeXML = xmlCreator.createXML(results);
+            xmlCreator.writeToXML(smokeXML, "\\smokeStatus.xml");
+        }
+        return smokeXML;
+    }
+
+    public Document overWriteSmokeDoc(){
+        Document smokeXML = null;
+        if(results.size() != 0) {
+            smokeXML = xmlCreator.createXML(results);
             xmlCreator.writeToXML(smokeXML, "\\smokeStatus.xml");
         }
         return smokeXML;
     }
 
     public ArrayList<individualSmokeTest> createAllSmokeTestsandAdd(){
-        ArrayList<individualSmokeTest> results = new ArrayList<>();
+        //ArrayList<individualSmokeTest> results = new ArrayList<>();
 
         individualSmokeTest baselineSmoke = new individualSmokeTest("BASELINE");
         individualSmokeTest demoSmoke = new individualSmokeTest("DEMO");
@@ -113,6 +118,19 @@ public class Controller {
         return smokeTestInfo;
     }
 
+    public void runSmokeTest(individualSmokeTest env) throws Exception {
+        env.setStatus("In Progress");
+
+        TestBase.initialize();
+        smokeTest = new SmokeTest();
+        if(smokeTest.environmentValidation(env.environmentName)){
+            env.setStatus("true");
+        }
+        else{
+            env.setStatus("false");
+        }
+
+    }
 
 
 

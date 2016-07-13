@@ -167,7 +167,7 @@ public class SSNValidator {
     }
 
     public void setSSNValidationError(String errMsg) {
-        System.out.println("SSNValidationError, if any, is: " + errMsg);
+        //System.out.println("SSNValidationError, if any, is: " + errMsg);
         validationErrorSSN = errMsg;
     }
 
