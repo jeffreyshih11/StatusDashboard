@@ -37,14 +37,14 @@
   //build status doc
   DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   DocumentBuilder db = dbf.newDocumentBuilder();
-  File xmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\environmentStatus.xml");
+  File xmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\environmentStatus.xml");
   Document environmentXML = db.parse(xmlFile);
   ArrayList<NodeList> buildInfo = controller.readBuildXML(environmentXML);
 
 
   //smoke test status doc
 
-  File SmokeXmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\smokeStatus.xml");
+  File SmokeXmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\smokeStatus.xml");
   Document SmokeDoc = db.parse(SmokeXmlFile);
   ArrayList<NodeList> smokeStatus = controller.readSmokeTestXML(SmokeDoc);
 
@@ -52,7 +52,7 @@
   final String CONFIG_PATH = "//src//main//resources//data//";
   CONFIG = new Properties();
   //FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
-  FileInputStream fn = new FileInputStream("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
+  FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
   CONFIG.load(fn);
 
 %>
@@ -65,7 +65,7 @@
 <p></p>
 
 <center>
-  <table style="width:800px">
+  <table BORDER=3 RULES=ALL FRAME=BORDER style="width:800px">
     <tr>
       <th>Environment</th>
       <th>Revision</th>
