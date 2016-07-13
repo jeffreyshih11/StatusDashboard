@@ -14,6 +14,7 @@ public class Controller {
     SmokeTest smokeTest;
     CreateXML xmlCreator;
     static ArrayList<individualSmokeTest> results = new ArrayList<>();
+    static ArrayList<Build> builds = new ArrayList<>();
 
     public Controller(){
         statusFetcher = new StatusFetcher();
@@ -33,7 +34,7 @@ public class Controller {
         statusFetcher.initialize();
         Document buildXML = null;
         if(statusFetcher.collectFromHudson()) {
-            ArrayList<Build> builds = statusFetcher.getAllMostRecents();
+            builds = statusFetcher.getAllMostRecents();
             buildXML = xmlCreator.createXML(builds);
             xmlCreator.writeToXML(buildXML, "\\environmentStatus.xml");
         }

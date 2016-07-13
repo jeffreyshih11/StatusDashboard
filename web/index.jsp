@@ -170,14 +170,14 @@
         %>
       </td>
 
-      <%--<td>
-        <% if(smokeStatus.item(i).getFirstChild().getNodeValue().equals("true")){ %>
+      <td>
+        <% if(smokeStatus.get(2).item(i).getFirstChild().getNodeValue().equals("true")){ %>
         <center><img src="LightG.jpg" title="The most recent smoke test succeeded" height="30" width="30"/></center>
         <% }
         else{ %>
         <center><img src="LightR.jpg" title="The most recent smoke test failed" height="30" width="30"/></center>
         <% } %>
-      </td>--%>
+      </td>
 
     </tr>
 
