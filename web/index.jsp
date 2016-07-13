@@ -2,15 +2,15 @@
          import="org.w3c.dom.Document,org.w3c.dom.NodeList,javax.xml.parsers.DocumentBuilder" errorPage="" %>
 <%@ page import="javax.xml.parsers.DocumentBuilderFactory" %>
 <%@ page import="java.io.File" %>
-<%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="java.util.Properties" %>
 <%@ page import="java.io.FileInputStream" %>
-<%@ page import="com.iworkscorp.dashboard.hudson.Controller" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Properties" %>
 
 <link rel="stylesheet" type="text/css" href="Style.css" title="gray">
 
 <%
-  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  /*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
   DocumentBuilder db = dbf.newDocumentBuilder();
 
@@ -23,7 +23,7 @@
   NodeList Revision = doc.getElementsByTagName("Revision");
   NodeList Builder = doc.getElementsByTagName("Builder");
   NodeList Date = doc.getElementsByTagName("Date");
-  NodeList BuildStatus = doc.getElementsByTagName("BuildStatus");
+  NodeList BuildStatus = doc.getElementsByTagName("BuildStatus");*/
 
   /*File SmokeXmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\SmokeTest.xml");
   Document SmokeDoc = db.parse(SmokeXmlFile);
@@ -34,6 +34,19 @@
 
   com.iworkscorp.dashboard.hudson.Controller controller = new com.iworkscorp.dashboard.hudson.Controller();
 
+  //build status doc
+  DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  DocumentBuilder db = dbf.newDocumentBuilder();
+  File xmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\environmentStatus.xml");
+  Document environmentXML = db.parse(xmlFile);
+  ArrayList<NodeList> buildInfo = controller.readBuildXML(environmentXML);
+
+
+  //smoke test status doc
+
+  File SmokeXmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\smokeStatus.xml");
+  Document SmokeDoc = db.parse(SmokeXmlFile);
+  ArrayList<NodeList> smokeStatus = controller.readSmokeTestXML(SmokeDoc);
 
   Properties CONFIG = null;
   final String CONFIG_PATH = "//src//main//resources//data//";
@@ -65,16 +78,16 @@
     </tr>
     <%
       int i;
-      for(i=0;i<=Environment.getLength()-1;i++)
+      for(i=0;i<=buildInfo.get(0).getLength()-1;i++)
       {
     %>
 
     <tr>
 
       <td>
-        <b><%= Environment.item(i).getAttributes().getNamedItem("name").getNodeValue()
+        <b><%= buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue()
         %></b>
-          <% if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("Baseline")){ %>
+          <% if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("Baseline")){ %>
          <form> <p align="left">Go to Site
             <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
               <option value="">Select one</option>
@@ -84,7 +97,7 @@
           </p></form>
 
         <% }
-            else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEMO")){ %>
+            else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEMO")){ %>
         <form><p align="left">Go to Site
           <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
@@ -94,7 +107,7 @@
         </p></form>
 
         <% }
-        else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEV")){ %>
+        else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEV")){ %>
         <form><p align="left">Go to Site
           <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
@@ -103,7 +116,7 @@
             <option value=<%=CONFIG.getProperty("DEV_ServiceDesk_Url")%>>SD</option></select>
         </p></form>
         <% }
-        else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("GAT")){ %>
+        else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("GAT")){ %>
         <form><p align="left">Go to Site
           <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
@@ -112,7 +125,7 @@
             <option value=<%=CONFIG.getProperty("GAT_ServiceDesk_Url")%>>SD</option></select>
         </p></form>
         <% }
-        else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("QA")){ %>
+        else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("QA")){ %>
         <form><p align="left">Go to Site
           <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
@@ -121,7 +134,7 @@
             <option value=<%=CONFIG.getProperty("QA_ServiceDesk_Url")%>>SD</option></select>
         </p></form>
         <% }
-        else if (Environment.item(i).getAttributes().getNamedItem("name").getNodeValue().equals("UAT")){ %>
+        else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("UAT")){ %>
         <form><p align="left">Go to Site
           <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
@@ -133,20 +146,20 @@
         <% } %>
       </td>
       <td>
-        <%= Revision.item(i).getFirstChild().getNodeValue()%>
+        <%= buildInfo.get(1).item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
-        <%= Builder.item(i).getFirstChild().getNodeValue()%>
+        <%= buildInfo.get(2).item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
-        <%= Date.item(i).getFirstChild().getNodeValue()%>
+        <%= buildInfo.get(3).item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
 
-        <% if (BuildStatus.item(i).getFirstChild().getNodeValue().equals("true")) {%>
+        <% if (buildInfo.get(4).item(i).getFirstChild().getNodeValue().equals("true")) {%>
         <center><img src="LightG.jpg" title="The most recent build succeeded" height="30" width="30"/></center>
         <% }
-        else if (BuildStatus.item(i).getFirstChild().getNodeValue().equals("building")) {
+        else if (buildInfo.get(4).item(i).getFirstChild().getNodeValue().equals("building")) {
         %>
         <center><img src="LightY.png" title="This environment is currently being built" height="30" width="30"/></center>
         <% }
@@ -156,15 +169,14 @@
         <% }
         %>
       </td>
+
       <%--<td>
-        <% if(SmokeStatus.item(i).getFirstChild().getNodeValue().equals("True")){ %>
+        <% if(smokeStatus.item(i).getFirstChild().getNodeValue().equals("true")){ %>
         <center><img src="LightG.jpg" title="The most recent smoke test succeeded" height="30" width="30"/></center>
         <% }
         else{ %>
         <center><img src="LightR.jpg" title="The most recent smoke test failed" height="30" width="30"/></center>
         <% } %>
-
-
       </td>--%>
 
     </tr>
