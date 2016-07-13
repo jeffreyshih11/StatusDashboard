@@ -61,17 +61,17 @@ public class CreateXML {
                     rootElement.appendChild(getBuild(doc, builds.get(i), environment));
                 }
             }
-            else if (environments.get(0).getClass() == SmokeTest.class){
-                ArrayList<SmokeTest> smokeStatus = (ArrayList<SmokeTest>) environments;
+            else if (environments.get(0).getClass() == individualSmokeTest.class){
+                ArrayList<individualSmokeTest> smokeStatus = (ArrayList<individualSmokeTest>) environments;
                 /*
                 * Parses through the ArrayList for each Build object and creates
                 * an environment Element to hold all of the data
                 */
                 for (int i = 0; i < smokeStatus.size(); i++) {
                     Element environment = doc.createElement("Environment");
-                    //environment.setAttribute("name", smokeStatus.get(i).environment);
+                    environment.setAttribute("name", smokeStatus.get(i).environmentName);
                     //calls the getBuild method to append each of the variables in the Build object
-                    //rootElement.appendChild(getStatus(doc, smokeStatus.get(i), environment));
+                    rootElement.appendChild(getStatus(doc, smokeStatus.get(i), environment));
                 }
             }
 
@@ -82,7 +82,7 @@ public class CreateXML {
         return doc;
     }
 
-    public void writeToXML(Document doc){
+    public void writeToXML(Document doc, String docName){
         //for output to file, console
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = null;
@@ -94,7 +94,8 @@ public class CreateXML {
             //write to console or file
             //StreamResult console = new StreamResult(System.out);
             //StreamResult file = new StreamResult(new File("C:\\Users\\avillaflor\\Documents\\GitHub\\StatusDashboard\\example.xml"));
-            StreamResult file = new StreamResult(new File(System.getProperty("user.dir") + "\\environmentStatus.xml"));
+            //System.out.print(System.getProperty("user.dir"));
+            StreamResult file = new StreamResult(new File(System.getProperty("user.dir") + docName));
             //write data
             //transformer.transform(source, console);
             transformer.transform(source, file);
@@ -126,10 +127,12 @@ public class CreateXML {
         return environment;
     }
 
-    /*private static Node getStatus(Document doc, SmokeTest smokeTest, Element environment) {
-        environment.appendChild(getElements(doc, environment, "Revision", smokeTest.revision));
-        environment.appendChild(getElements(doc, environment, "SmokeStatus", smokeTest.smokeStatus));
-    }*/
+    private static Node getStatus(Document doc, individualSmokeTest indv, Element environment) {
+        //environment.appendChild(getElements(doc, environment, "Environme", indv.environmentName));
+        environment.appendChild(getElements(doc, environment, "Revision", indv.revision));
+        environment.appendChild(getElements(doc, environment, "SmokeStatus", indv.status));
+        return environment;
+    }
 
     //utility method to create text node
     private static Node getElements(Document doc, Element element, String name, String value) {

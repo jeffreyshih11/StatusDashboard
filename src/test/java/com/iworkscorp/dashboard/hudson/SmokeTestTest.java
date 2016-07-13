@@ -1,15 +1,17 @@
 package com.iworkscorp.dashboard.hudson;
 
-/**
- * Created by jshih on 7/12/2016.
- */
+//Created by jshih on 7/12/2016.
+
+
+import org.junit.Test;
+
 public class SmokeTestTest {
-    /*SmokeTest smokeTest = new SmokeTest();
+    SmokeTest smokeTest = new SmokeTest();
 
 
 
 
-    private static final String CATEGORY_TYPE = JVSProperties.CivilianRetiree.getProperty();
+    /*private static final String CATEGORY_TYPE = JVSProperties.CivilianRetiree.getProperty();
     private static final String HUMAN_RESOURCES_ROLE = "Human Resources";
     private static final String COMPONENT_ADJUDICATOR_ROLE = "Component Adjudicator";
     private static final String SECURITY_OFFICER_ADMIN_ROLE = "Security Officer Admin";
@@ -84,28 +86,30 @@ public class SmokeTestTest {
         System.out.println("This test took " + executionTime + "Seconds \n");
     }
 
-    *//**
+
+*
      * This method will initialize the browser and maximize it before the class
      *
      * @throws Exception
-     *//*
+
     @BeforeClass
     public static void setupClass() throws Exception {
         initialize();
 
     }
 
-    *//**
+
+*
      * This method will close the browser and driver after the class
      *
      * @throws Exception
-     *//*
+
     @AfterClass
     public static void teardownClass() throws Exception {
 
         quitBrowser();
 
-    }
+    }*/
 
 
     @Test
@@ -185,5 +189,6 @@ public class SmokeTestTest {
         else{
             System.out.print("nooooo");
         }
-    }*/
+    }
+
 }

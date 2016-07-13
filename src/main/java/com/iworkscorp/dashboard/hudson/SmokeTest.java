@@ -131,6 +131,11 @@ public class SmokeTest extends TestBase {
     }
 
 
+
+
+
+
+
     //ALL THE DIFFERENT ENVIORNMENT METHODS
 
     //DEV
@@ -262,12 +267,18 @@ public class SmokeTest extends TestBase {
      * @param userInfo
      * @throws Exception
      */
-    public boolean CATSsmoke(String env, UserInfo userInfo) throws Exception{
-        reusable.loginToCATSasOneEnv(env);
-        reusable.createCaseForSubject(userInfo.ssn,"//*[@id='createCaseForm:selectDivisionMenu_panel']/div/ul/li[text()='Division D (Air Force)']" /*"/[@id='createCaseForm:selectDivisionMenu_panel']/div/ul/li[@data-label='Division B (Army)']"*/, CATSProperties.CaseTypeConfedential.getProperty(), CATSProperties.SelectSMO.getProperty(), CATSProperties.InvestigationSSBI.getProperty());
-        com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.xpath(CATSProperties.Doc_Tab.getProperty()));
-        reusable.docUpload("//*/input[@type='file']", "C:\\Users\\jshih\\Documents\\pii_certificate.pdf", "COI", "pii_certificate", "description");
-        return true;
+    public boolean CATSsmoke(String env, UserInfo userInfo) {
+        try {
+            reusable.loginToCATSasOneEnv(env);
+            reusable.createCaseForSubject(userInfo.ssn,"//*[@id='createCaseForm:selectDivisionMenu_panel']/div/ul/li[text()='Division D (Air Force)']" /*"/[@id='createCaseForm:selectDivisionMenu_panel']/div/ul/li[@data-label='Division B (Army)']"*/, CATSProperties.CaseTypeConfedential.getProperty(), CATSProperties.SelectSMO.getProperty(), CATSProperties.InvestigationSSBI.getProperty());
+            com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.xpath(CATSProperties.Doc_Tab.getProperty()));
+            reusable.docUpload("//*/input[@type='file']", "C:\\Users\\jshih\\Documents\\pii_certificate.pdf", "COI", "pii_certificate", "description");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     /**
@@ -275,19 +286,27 @@ public class SmokeTest extends TestBase {
      * @param env
      * @throws Exception
      */
-    public boolean serviceDeskSmoke(String env) throws Exception{
+    public boolean serviceDeskSmoke(String env) {
         //driver.navigate().to(CONFIG.getProperty("ServiceDesk_Url"));
         //ReusableFunctions.waitAndLoginWithUser("1");
-        loginToSDasOneEnv(env);
-        com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("statusPanelForm:eaiConfigLink"));
-        com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:0:j_id_dc_toggler"));
+        try {
+            if(loginToSDasOneEnv(env)) {
+                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("statusPanelForm:eaiConfigLink"));
+                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:0:j_id_dc_toggler"));
 
-        com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:3:j_id_dc_toggler"));
-        com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:2:j_id_dc_toggler"));
-        WebElement empty = com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndFindBy(By.id("majorTabPanel:eaiPropertyDataGridId:3:propertiesIdTable:0:propertiesIdeaipropKey1"));
-        //System.out.print("SDf");
-        driver.close();
-        return true;
+                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:3:j_id_dc_toggler"));
+                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:2:j_id_dc_toggler"));
+                WebElement empty = com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndFindBy(By.id("majorTabPanel:eaiPropertyDataGridId:3:propertiesIdTable:0:propertiesIdeaipropKey1"));
+                //System.out.print("SDf");
+                driver.close();
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
 
@@ -296,8 +315,16 @@ public class SmokeTest extends TestBase {
      * @param env
      * @throws Exception
      */
-    public void loginToSDasOneEnv(String env) throws Exception{
-        loginToSDEnv("1", env);
+    public boolean loginToSDasOneEnv(String env) {
+        try {
+            if(loginToSDEnv("1", env)) {
+                return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
@@ -307,7 +334,7 @@ public class SmokeTest extends TestBase {
      * @param env
      * @throws Exception
      */
-    public void loginToSDEnv(String user, String env) throws Exception{
+    public boolean loginToSDEnv(String user, String env) {
         String login_url = null;
         if (env.equals("DEV")) {
             login_url = "DEV_ServiceDesk_Url";
@@ -332,7 +359,13 @@ public class SmokeTest extends TestBase {
 
         }
         driver.navigate().to(CONFIG.getProperty(login_url));
-        ReusableFunctions.waitAndLoginWithUser(user);
+        try {
+            ReusableFunctions.waitAndLoginWithUser(user);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

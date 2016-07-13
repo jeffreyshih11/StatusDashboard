@@ -36,8 +36,9 @@ public class StatusFetcher {
      * Logs into Hudson
      */
     public boolean logIn(){
-        System.out.println(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
+        //System.out.println(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
         driver.navigate().to(CONFIG.getProperty("baseURL") + "login?from=%2Fhudson");
+
 
         ReusableFunctions.waitUntilElementExistsAndClick(By.xpath("//*[text()='log in']"), 1500);
         ReusableFunctions.waitUntilElementExistsAnsSendkeys(By.xpath("//*[@id='loginForm']//input[@name='j_username']"), CONFIG.getProperty("username"));

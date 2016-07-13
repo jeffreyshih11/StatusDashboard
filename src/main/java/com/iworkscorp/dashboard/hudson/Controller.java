@@ -11,36 +11,41 @@ import java.util.ArrayList;
 public class Controller {
 
     StatusFetcher statusFetcher;
-    ArrayList<SmokeTest> smokeTestArrayList;
+    SmokeTest smokeTest;
     CreateXML xmlCreator;
 
     public Controller(){
         statusFetcher = new StatusFetcher();
-        smokeTestArrayList = new ArrayList<>();
+        /*try {
+            TestBase.initialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        smokeTest = new SmokeTest();*/
         xmlCreator = new CreateXML();
     }
 
+    public static void main(String[] args) throws Exception {
+        Controller con = new Controller();
+        con.generateBuildInfo();
+        con.generateSmokeDoc();
+    }
 
-    public boolean generateBuildInfo() throws Exception {
+    public Document generateBuildInfo() throws Exception {
         TestBase.initialize();
         statusFetcher.initialize();
+        Document buildXML = null;
         if(statusFetcher.collectFromHudson()) {
             ArrayList<Build> builds = statusFetcher.getAllMostRecents();
-            xmlCreator.createXML(builds);
+            buildXML = xmlCreator.createXML(builds);
+            xmlCreator.writeToXML(buildXML, "\\environmentStatus.xml");
         }
-        return true;
+        return buildXML;
     }
 
     public ArrayList<NodeList> readBuildXML(Document doc){
-        /*DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder db = dbf.newDocumentBuilder();*/
-
-        //Document doc = db.parse("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\DashboardModule\\web\\name.xml");
-        //File xmlFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\example.xml");
-        //File xmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\example.xml");
-        //Document doc = db.parse(xmlFile);
-
+       
         ArrayList<NodeList> buildInfoList = new ArrayList<>();
         NodeList Environment = doc.getElementsByTagName("Environment");
         NodeList Revision = doc.getElementsByTagName("Revision");
@@ -55,6 +60,39 @@ public class Controller {
         buildInfoList.add(BuildStatus);
 
         return buildInfoList;
+
+    }
+
+    public Document generateSmokeDoc(){
+        Document smokeXML = null;
+        ArrayList<individualSmokeTest> smokeTests = createAllSmokeTestsandAdd();
+        if(smokeTests.size() != 0) {
+            smokeXML = xmlCreator.createXML(smokeTests);
+            xmlCreator.writeToXML(smokeXML, "\\smokeStatus.xml");
+        }
+        return smokeXML;
+    }
+
+    public ArrayList<individualSmokeTest> createAllSmokeTestsandAdd(){
+        ArrayList<individualSmokeTest> results = new ArrayList<>();
+
+        individualSmokeTest baselineSmoke = new individualSmokeTest("BASELINE");
+        individualSmokeTest demoSmoke = new individualSmokeTest("DEMO");
+        individualSmokeTest devSmoke = new individualSmokeTest("DEV");
+        individualSmokeTest gatSmoke = new individualSmokeTest("GAT");
+        individualSmokeTest qaSmoke = new individualSmokeTest("QA");
+        //individualSmokeTest localSmoke = new individualSmokeTest("LOCAL");
+        individualSmokeTest uatSmoke = new individualSmokeTest("UAT");
+
+        results.add(baselineSmoke);
+        results.add(demoSmoke);
+        results.add(devSmoke);
+        results.add(gatSmoke);
+        results.add(qaSmoke);
+        //results.add(localSmoke);
+        results.add(uatSmoke);
+
+        return results;
 
     }
 
@@ -74,6 +112,9 @@ public class Controller {
 
         return smokeTestInfo;
     }
+
+
+
 
 }
 
