@@ -19,24 +19,48 @@ public class Controller {
     StatusFetcher statusFetcher;
     SmokeTest smokeTest;
     CreateXML xmlCreator;
-    static Document environmentStatus;
-    static Document smokeStatus;
+    public static File environmentStatusFile;
+    public static File smokeStatusFile;
+    public static Document environmentStatusDoc;
+    public static Document smokeStatusDoc;
     static ArrayList<individualSmokeTest> results;
     static ArrayList<Build> builds;
 
     static ArrayList<NodeList> buildInfo;
     static ArrayList<NodeList> smokeInfo;
 
-    public Controller() throws ParserConfigurationException, IOException, SAXException {
+    /**
+     * Gets the xmls to read from
+     * Initializes NodeLists of build info and smoke test info
+     */
+    public Controller() {
         statusFetcher = new StatusFetcher();
         xmlCreator = new CreateXML();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
+        DocumentBuilder db = null;
+        try {
+            db = dbf.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
 
-
-        environmentStatus = db.parse(new File(System.getProperty("user.dir") + "\\environmentStatus.xml"));
-        smokeStatus = db.parse(new File((System.getProperty("user.dir") + "\\smokeStatus.xml")));
+        environmentStatusFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\environmentStatus.xml");
+        try {
+            environmentStatusDoc = db.parse(environmentStatusFile);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        smokeStatusFile = new File(("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\smokeStatus.xml"));
+        try {
+            smokeStatusDoc = db.parse(smokeStatusFile);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         builds  = new ArrayList<>();
         results = new ArrayList<>();
@@ -44,34 +68,44 @@ public class Controller {
         //smokeInfo = readSmokeTestXML(smokeStatus);
     }
 
-    public static void main(String[] args) throws Exception {
+   /* public static void main(String[] args) throws Exception {
         Controller con = new Controller();
         //con.generateBuildInfo();
-        buildInfo = readBuildXML(environmentStatus);
-        System.out.println(buildInfo.get(2).item(0).getFirstChild().getNodeValue());
+        buildInfo = readBuildXML(environmentStatusDoc);
 
+        builds = con.createBuildsFromXMLNodes(buildInfo);
         //con.generateSmokeDoc();
-        //con.runSmokeTest(results.get(0)); e
-        smokeInfo = readSmokeTestXML(smokeStatus);
+        smokeInfo = readSmokeTestXML(smokeStatusDoc);
+        results = con.createSmokeTestObjFromXML(smokeInfo);
 
-        System.out.print(smokeInfo.get(1).item(0).getFirstChild().getNodeValue());
-        //con.checkAndRunSmoke(builds.get(1), results.get(1));
+        con.checkAndRunSmoke(builds.get(1), results.get(1));
         //con.runAllSmokeTests();
         //con.overWriteSmokeDoc();
-    }
+    }*/
 
+    /**
+     * Pulls information from Hudson and writes it to xml
+     * @return
+     * @throws Exception
+     */
     public Document generateBuildInfo() throws Exception {
         TestBase.initialize();
         statusFetcher.initialize();
 
         if(statusFetcher.collectFromHudson()) {
             builds = statusFetcher.getAllMostRecents();
-            environmentStatus = xmlCreator.createXML(builds);
-            xmlCreator.writeToXML(environmentStatus, "\\environmentStatus.xml");
+            environmentStatusDoc = xmlCreator.createXML(builds);
+            xmlCreator.writeToXML(environmentStatusDoc, "\\environmentStatus.xml");
         }
-        return environmentStatus;
+        return environmentStatusDoc;
     }
 
+
+    /**
+     * Reads the xml and puts all information into an ArrayList of nodelists
+     * @param doc
+     * @return
+     */
     public static ArrayList<NodeList> readBuildXML(Document doc){
 
         ArrayList<NodeList> buildInfoList = new ArrayList<>();
@@ -91,17 +125,50 @@ public class Controller {
 
     }
 
+
+    /**
+     * Creates new build objects from xml information
+     * @param buildNodes
+     * @return
+     */
+    public ArrayList<Build> createBuildsFromXMLNodes(ArrayList<NodeList> buildNodes){
+
+        ArrayList<Build> tempBuilds = new ArrayList<>();
+
+        for(int i = 0; i < buildNodes.get(0).getLength(); i++){
+            Build newBuild = new Build();
+
+            newBuild.environment = buildNodes.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue();
+            newBuild.builder = buildNodes.get(1).item(i).getFirstChild().getNodeValue();
+            newBuild.dateBuiltFull = buildNodes.get(2).item(i).getFirstChild().getNodeValue();
+            newBuild.revision = Integer.parseInt(buildNodes.get(3).item(i).getFirstChild().getNodeValue());
+            newBuild.buildStatus = buildNodes.get(4).item(i).getFirstChild().getNodeValue();;
+            tempBuilds.add(newBuild);
+        }
+        return tempBuilds;
+    }
+
+
+    /**
+     * initializes smoke test xml with environment names
+     * @return
+     */
     public Document generateSmokeDoc(){
 
         results = createAllSmokeTestsandAdd();
         if(results.size() != 0) {
-            smokeStatus = xmlCreator.createXML(results);
-            xmlCreator.writeToXML(smokeStatus, "\\smokeStatus.xml");
+            smokeStatusDoc = xmlCreator.createXML(results);
+            xmlCreator.writeToXML(smokeStatusDoc, "\\smokeStatus.xml");
         }
-        return smokeStatus;
+        return smokeStatusDoc;
     }
 
-    public Document overWriteSmokeDoc(){
+
+    /**
+     * updates information the smoke status xml
+     * @return
+     */
+    public Document updateSmokeDoc(){
         Document smokeXML = null;
         if(results.size() != 0) {
             smokeXML = xmlCreator.createXML(results);
@@ -110,10 +177,15 @@ public class Controller {
         return smokeXML;
     }
 
+
+    /**
+     *
+     * @return
+     */
     public ArrayList<individualSmokeTest> createAllSmokeTestsandAdd(){
         //ArrayList<individualSmokeTest> results = new ArrayList<>();
 
-        individualSmokeTest baselineSmoke = new individualSmokeTest("BASELINE");
+        individualSmokeTest baselineSmoke = new individualSmokeTest("Baseline");
         individualSmokeTest demoSmoke = new individualSmokeTest("DEMO");
         individualSmokeTest devSmoke = new individualSmokeTest("DEV");
         individualSmokeTest gatSmoke = new individualSmokeTest("GAT");
@@ -139,8 +211,8 @@ public class Controller {
 
         ArrayList<NodeList> smokeTestInfo = new ArrayList<>();
 
-        NodeList SmokeEnvironment = SmokeDoc.getElementsByTagName("SmokeEnvironment");
-        NodeList SmokeRevision = SmokeDoc.getElementsByTagName("SmokeRevision");
+        NodeList SmokeEnvironment = SmokeDoc.getElementsByTagName("Environment");
+        NodeList SmokeRevision = SmokeDoc.getElementsByTagName("Revision");
         NodeList SmokeStatus = SmokeDoc.getElementsByTagName("SmokeStatus");
 
         smokeTestInfo.add(SmokeEnvironment);
@@ -148,6 +220,23 @@ public class Controller {
         smokeTestInfo.add(SmokeStatus);
 
         return smokeTestInfo;
+    }
+
+
+
+    public ArrayList<individualSmokeTest> createSmokeTestObjFromXML(ArrayList<NodeList> smokeNodes){
+        ArrayList<individualSmokeTest> tempSmokes = new ArrayList<>();
+
+        for(int i = 0; i < smokeNodes.get(0).getLength(); i++){
+            individualSmokeTest tempSmokeTest = new individualSmokeTest();
+
+            tempSmokeTest.environmentName = smokeNodes.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue();
+            tempSmokeTest.revision = Integer.parseInt(smokeInfo.get(1).item(i).getFirstChild().getNodeValue());
+            tempSmokeTest.status = smokeInfo.get(2).item(i).getFirstChild().getNodeValue();
+            tempSmokes.add(tempSmokeTest);
+        }
+
+        return tempSmokes;
     }
 
     public void runSmokeTest(individualSmokeTest env) throws Exception {
@@ -162,7 +251,7 @@ public class Controller {
             env.setStatus("false");
         }
 
-        overWriteSmokeDoc();
+        updateSmokeDoc();
     }
 
 

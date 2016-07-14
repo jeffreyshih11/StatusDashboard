@@ -9,10 +9,15 @@ public class individualSmokeTest{
     String status;
 
 
+    public individualSmokeTest(){
+        environmentName = "";
+        revision = -1;
+        status = "false";
+    }
     public individualSmokeTest(String env){
         environmentName = env;
         revision = -1;
-        status = "nah";
+        status = "false";
     }
 
     public void setStatus(String set){
