@@ -179,7 +179,9 @@ public class Controller {
 
 
     /**
-     *
+     * Creates initial individual smoke test objects where
+     * revision is set to -1 and status is set to false so that
+     * smoke tests have to be run
      * @return
      */
     public ArrayList<individualSmokeTest> createAllSmokeTestsandAdd(){
@@ -205,6 +207,13 @@ public class Controller {
 
     }
 
+
+    /**
+     * Creates arraylist of nodelists of data extracted
+     * from smoketest xml
+     * @param SmokeDoc
+     * @return
+     */
     public static ArrayList<NodeList> readSmokeTestXML(Document SmokeDoc){
         //File SmokeXmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\SmokeTest.xml");
         //Document SmokeDoc = db.parse(doc);
@@ -223,7 +232,11 @@ public class Controller {
     }
 
 
-
+    /**
+     * creates arraylist of individual smoke tests from xml
+     * @param smokeNodes
+     * @return
+     */
     public ArrayList<individualSmokeTest> createSmokeTestObjFromXML(ArrayList<NodeList> smokeNodes){
         ArrayList<individualSmokeTest> tempSmokes = new ArrayList<>();
 
@@ -239,6 +252,11 @@ public class Controller {
         return tempSmokes;
     }
 
+    /**
+     * runs smoke test and updates the smoke test xml
+     * @param env
+     * @throws Exception
+     */
     public void runSmokeTest(individualSmokeTest env) throws Exception {
         //env.setStatus("In Progress");
 
@@ -255,6 +273,14 @@ public class Controller {
     }
 
 
+    /**
+     * checks if the build and smoke test names are the same,
+     * if the build was successful and if the revisions are different.
+     * if all are true, a smoke teste needs to be run
+     * @param build
+     * @param smokeTest
+     * @return
+     */
     public boolean needsToRunSmokeTest(Build build, individualSmokeTest smokeTest){
         if(build.environment.equals(smokeTest.environmentName) && build.buildStatus.equals("true") && (build.revision != smokeTest.revision)){
             smokeTest.revision = build.revision;
@@ -263,12 +289,24 @@ public class Controller {
         return false;
     }
 
+
+    /**
+     * runs smoke tests for all environments
+     * @throws Exception
+     */
     public void runAllSmokeTests() throws Exception {
         for(individualSmokeTest smokeTest: results){
             runSmokeTest(smokeTest);
         }
     }
 
+
+    /**
+     * checks if a smoke test needs to be run, if true, runs the smoke test
+     * @param build
+     * @param smokeTest
+     * @throws Exception
+     */
     public void checkAndRunSmoke(Build build, individualSmokeTest smokeTest) throws Exception {
         if(needsToRunSmokeTest(build, smokeTest)){
             runSmokeTest(smokeTest);
