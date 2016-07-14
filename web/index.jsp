@@ -53,7 +53,7 @@
   CONFIG = new Properties();
   //FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
   //FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
-  FileInputStream fn = new FileInputStream("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
+  FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
   CONFIG.load(fn);
 
 %>
@@ -190,8 +190,11 @@
 </center>
 
 <p></p>
-<center><p> Last updated: <% SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+<center><p> Build Status last updated: <% SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
   out.print(formattedDate.format(controller.environmentStatusFile.lastModified()));
+%></p></center>
+<center><p> Smoke Test last updated: <%
+  out.print(formattedDate.format(controller.smokeStatusFile.lastModified()));
 %></p></center>
 <p></p>
 
