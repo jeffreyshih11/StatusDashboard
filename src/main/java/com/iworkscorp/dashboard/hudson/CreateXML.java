@@ -123,13 +123,13 @@ public class CreateXML {
         environment.appendChild(getElements(doc, environment, "Date", build.dateBuiltFull));
         environment.appendChild(getElements(doc, environment, "Revision", Integer.toString(build.revision)));
         environment.appendChild(getElements(doc, environment, "BuildStatus", build.buildStatus));
-        environment.appendChild(getElements(doc, environment, "SmokeTestPass", build.smokeTestPass));
+        //environment.appendChild(getElements(doc, environment, "SmokeTestPass", build.smokeTestPass));
         return environment;
     }
 
     private static Node getStatus(Document doc, individualSmokeTest indv, Element environment) {
         //environment.appendChild(getElements(doc, environment, "Environme", indv.environmentName));
-        environment.appendChild(getElements(doc, environment, "Revision", indv.revision));
+        environment.appendChild(getElements(doc, environment, "Revision", Integer.toString(indv.revision)));
         environment.appendChild(getElements(doc, environment, "SmokeStatus", indv.status));
         return environment;
     }

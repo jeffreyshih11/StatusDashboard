@@ -5,13 +5,13 @@ package com.iworkscorp.dashboard.hudson;
  */
 public class individualSmokeTest{
     String environmentName;
-    String revision;
+    int revision;
     String status;
 
 
     public individualSmokeTest(String env){
         environmentName = env;
-        revision = "-1";
+        revision = -1;
         status = "nah";
     }
 
@@ -19,7 +19,7 @@ public class individualSmokeTest{
         status = set;
     }
 
-    public void setRevision(String rev){
+    public void setRevision(int rev){
         revision = rev;
     }
 
