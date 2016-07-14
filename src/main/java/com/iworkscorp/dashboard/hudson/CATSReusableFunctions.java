@@ -184,7 +184,7 @@ public class CATSReusableFunctions extends  com.iworkscorp.dashboard.hudson.Test
         } else if (env.equals("LOCAL")) {
             login_url = "LOCAL_CATS_Url";
 
-        } else if (env.equals("BASELINE")) {
+        } else if (env.equals("Baseline")) {
             login_url = "BASELINE_CATS_Url";
 
         } else if (env.equals("DEMO")) {

@@ -29,6 +29,8 @@ public class Controller {
     static ArrayList<NodeList> buildInfo;
     static ArrayList<NodeList> smokeInfo;
 
+
+
     /**
      * Gets the xmls to read from
      * Initializes NodeLists of build info and smoke test info
@@ -64,8 +66,9 @@ public class Controller {
 
         builds  = new ArrayList<>();
         results = new ArrayList<>();
-        //buildInfo = readBuildXML(environmentStatus);
-        //smokeInfo = readSmokeTestXML(smokeStatus);
+        buildInfo = readBuildXML(environmentStatusDoc);
+        smokeInfo = readSmokeTestXML(smokeStatusDoc);
+
     }
 
    /* public static void main(String[] args) throws Exception {
@@ -82,6 +85,7 @@ public class Controller {
         //con.runAllSmokeTests();
         //con.overWriteSmokeDoc();
     }*/
+
 
     /**
      * Pulls information from Hudson and writes it to xml
@@ -131,7 +135,7 @@ public class Controller {
      * @param buildNodes
      * @return
      */
-    public ArrayList<Build> createBuildsFromXMLNodes(ArrayList<NodeList> buildNodes){
+    public void createBuildsFromXMLNodes(ArrayList<NodeList> buildNodes){
 
         ArrayList<Build> tempBuilds = new ArrayList<>();
 
@@ -143,9 +147,9 @@ public class Controller {
             newBuild.dateBuiltFull = buildNodes.get(2).item(i).getFirstChild().getNodeValue();
             newBuild.revision = Integer.parseInt(buildNodes.get(3).item(i).getFirstChild().getNodeValue());
             newBuild.buildStatus = buildNodes.get(4).item(i).getFirstChild().getNodeValue();;
-            tempBuilds.add(newBuild);
+            builds.add(newBuild);
         }
-        return tempBuilds;
+        //return tempBuilds;
     }
 
 
@@ -237,8 +241,8 @@ public class Controller {
      * @param smokeNodes
      * @return
      */
-    public ArrayList<individualSmokeTest> createSmokeTestObjFromXML(ArrayList<NodeList> smokeNodes){
-        ArrayList<individualSmokeTest> tempSmokes = new ArrayList<>();
+    public void createSmokeTestObjFromXML(ArrayList<NodeList> smokeNodes){
+        //ArrayList<individualSmokeTest> tempSmokes = new ArrayList<>();
 
         for(int i = 0; i < smokeNodes.get(0).getLength(); i++){
             individualSmokeTest tempSmokeTest = new individualSmokeTest();
@@ -246,10 +250,10 @@ public class Controller {
             tempSmokeTest.environmentName = smokeNodes.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue();
             tempSmokeTest.revision = Integer.parseInt(smokeInfo.get(1).item(i).getFirstChild().getNodeValue());
             tempSmokeTest.status = smokeInfo.get(2).item(i).getFirstChild().getNodeValue();
-            tempSmokes.add(tempSmokeTest);
+            results.add(tempSmokeTest);
         }
 
-        return tempSmokes;
+        //return tempSmokes;
     }
 
     /**
@@ -282,7 +286,7 @@ public class Controller {
      * @return
      */
     public boolean needsToRunSmokeTest(Build build, individualSmokeTest smokeTest){
-        if(build.environment.equals(smokeTest.environmentName) && build.buildStatus.equals("true") && (build.revision != smokeTest.revision)){
+        if(build.environment.equals(smokeTest.environmentName) && build.buildStatus.equals("true") && ((build.revision != smokeTest.revision) || smokeTest.status.equals("false"))){
             smokeTest.revision = build.revision;
             return true;
         }

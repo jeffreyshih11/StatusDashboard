@@ -226,10 +226,12 @@ public class SmokeTest extends TestBase {
             else{
                 return false;
             }
+            teardownClass();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
+
         return true;
     }
 
@@ -348,7 +350,7 @@ public class SmokeTest extends TestBase {
         } else if (env.equals("LOCAL")) {
             login_url = "LOCAL_ServiceDesk_Url";
 
-        } else if (env.equals("BASELINE")) {
+        } else if (env.equals("Baseline")) {
             login_url = "BASELINE_ServiceDesk_Url";
 
         } else if (env.equals("DEMO")) {

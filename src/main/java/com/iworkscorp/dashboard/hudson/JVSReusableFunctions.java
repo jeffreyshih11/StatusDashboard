@@ -60,7 +60,7 @@ public class JVSReusableFunctions extends TestBase {
         } else if (env.equals("LOCAL")) {
             login_url = "LOCAL_CP_Url";
 
-        } else if (env.equals("BASELINE")) {
+        } else if (env.equals("Baseline")) {
             login_url = "BASELINE_CP_Url";
 
         } else if (env.equals("DEMO")) {
@@ -106,7 +106,7 @@ public class JVSReusableFunctions extends TestBase {
         } else if (env.equals("LOCAL")) {
             logout_url = "LOCAL_CP_Url1";
 
-        } else if (env.equals("BASELINE")) {
+        } else if (env.equals("Baseline")) {
             logout_url = "BASELINE_CP_Url1";
 
         } else if (env.equals("DEMO")) {
