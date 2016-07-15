@@ -53,7 +53,7 @@
   CONFIG = new Properties();
   //FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
   //FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
-  FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
+  FileInputStream fn = new FileInputStream("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
   CONFIG.load(fn);
 
 %>
@@ -147,13 +147,13 @@
         <% } %>
       </td>
       <td>
+        <%= buildInfo.get(3).item(i).getFirstChild().getNodeValue()%>
+      </td>
+      <td>
         <%= buildInfo.get(1).item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
         <%= buildInfo.get(2).item(i).getFirstChild().getNodeValue()%>
-      </td>
-      <td>
-        <%= buildInfo.get(3).item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
 
