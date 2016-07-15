@@ -1,5 +1,6 @@
 package com.iworkscorp.dashboard.hudson;
 
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -29,7 +30,7 @@ public class Controller {
     static ArrayList<NodeList> buildInfo;
     static ArrayList<NodeList> smokeInfo;
 
-
+    static TestBase testBase;
 
     /**
      * Gets the xmls to read from
@@ -64,6 +65,11 @@ public class Controller {
             e.printStackTrace();
         }
 
+        try {
+            testBase.initialize();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         builds  = new ArrayList<>();
         results = new ArrayList<>();
         buildInfo = readBuildXML(environmentStatusDoc);
@@ -93,7 +99,9 @@ public class Controller {
      * @throws Exception
      */
     public Document generateBuildInfo() throws Exception {
-        TestBase.initialize();
+        testBase = new TestBase();
+        //testBase.initialize();
+        testBase.driver = new EventFiringWebDriver(testBase.dr);
         statusFetcher.initialize();
 
         if(statusFetcher.collectFromHudson()) {
@@ -264,7 +272,10 @@ public class Controller {
     public void runSmokeTest(individualSmokeTest env) throws Exception {
         //env.setStatus("In Progress");
 
-        TestBase.initialize();
+        testBase = new TestBase();
+        testBase.driver = new EventFiringWebDriver(testBase.dr);
+        //testBase.initialize();
+
         smokeTest = new SmokeTest();
         if(smokeTest.environmentValidation(env.environmentName)){
             env.setStatus("true");
@@ -299,8 +310,9 @@ public class Controller {
      * @throws Exception
      */
     public void runAllSmokeTests() throws Exception {
-        for(individualSmokeTest smokeTest: results){
-            runSmokeTest(smokeTest);
+        for(int i = 0; i < results.size(); i++){
+
+            checkAndRunSmoke(builds.get(i), results.get(i));
         }
     }
 
@@ -315,6 +327,10 @@ public class Controller {
         if(needsToRunSmokeTest(build, smokeTest)){
             runSmokeTest(smokeTest);
         }
+    }
+
+    public void closeBrowser(){
+        testBase.quitBrowser();
     }
 }
 
