@@ -53,7 +53,7 @@
   CONFIG = new Properties();
   //FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
   //FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
-  FileInputStream fn = new FileInputStream("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
+  FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
   CONFIG.load(fn);
 
 %>
@@ -88,33 +88,39 @@
       <td>
         <b><%= buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue()
         %></b>
-          <% if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("Baseline")){ %>
-         <form> <p align="left">Go to Site
-            <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
-              <option value="">Select one</option>
-              <option value=<%=CONFIG.getProperty("BASELINE_CP_Url")%>>JVS</option>
-              <option value=<%=CONFIG.getProperty("BASELINE_CATS_Url")%>>CATS</option>
-              <option value=<%=CONFIG.getProperty("BASELINE_ServiceDesk_Url")%>>SD</option></select>
-          </p></form>
+        <% if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("Baseline")){ %>
+        <form> <p align="left">Go to Site
+          <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
+            <option value="">Select one</option>
+            <option value=<%=CONFIG.getProperty("BASELINE_CP_Url")%>>JVS</option>
+            <option value=<%=CONFIG.getProperty("BASELINE_CATS_Url")%>>CATS</option>
+            <option value=<%=CONFIG.getProperty("BASELINE_ServiceDesk_Url")%>>SD</option>
+            <option value=<%=CONFIG.getProperty("BASELINE_REPORTS_Url")%>>REPORTS</option>
+            <option value=<%=CONFIG.getProperty("BASELINE_SELF_Url")%>>SELF SERVICE</option></select>
+        </p></form>
 
         <% }
-            else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEMO")){ %>
+        else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEMO")){ %>
         <form><p align="left">Go to Site
           <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
             <option value=<%=CONFIG.getProperty("DEMO_CP_Url")%>>JVS</option>
             <option value=<%=CONFIG.getProperty("DEMO_CATS_Url")%>>CATS</option>
-            <option value=<%=CONFIG.getProperty("DEMO_ServiceDesk_Url")%>>SD</option></select>
+            <option value=<%=CONFIG.getProperty("DEMO_ServiceDesk_Url")%>>SD</option>
+            <option value=<%=CONFIG.getProperty("DEMO_REPORTS_Url")%>>REPORTS</option>
+            <option value=<%=CONFIG.getProperty("DEMO_SELF_Url")%>>SELF SERVICE</option></select>
         </p></form>
 
         <% }
-          else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEV")){ %>
+        else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("DEV")){ %>
         <form><p align="left">Go to Site
           <select onchange="window.open(setit.options[setit.selectedIndex].value)" id="setit" style="color: black" size="1" name="test">
             <option value="">Select one</option>
             <option value=<%=CONFIG.getProperty("DEV_CP_Url")%>>JVS</option>
             <option value=<%=CONFIG.getProperty("DEV_CATS_Url")%>>CATS</option>
-            <option value=<%=CONFIG.getProperty("DEV_ServiceDesk_Url")%>>SD</option></select>
+            <option value=<%=CONFIG.getProperty("DEV_ServiceDesk_Url")%>>SD</option>
+            <option value=<%=CONFIG.getProperty("DEV_REPORTS_Url")%>>REPORTS</option>
+            <option value=<%=CONFIG.getProperty("DEV_SELF_Url")%>>SELF SERVICE</option></select>
         </p></form>
         <% }
         else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("GAT")){ %>
@@ -123,7 +129,9 @@
             <option value="">Select one</option>
             <option value=<%=CONFIG.getProperty("GAT_CP_Url")%>>JVS</option>
             <option value=<%=CONFIG.getProperty("GAT_CATS_Url")%>>CATS</option>
-            <option value=<%=CONFIG.getProperty("GAT_ServiceDesk_Url")%>>SD</option></select>
+            <option value=<%=CONFIG.getProperty("GAT_ServiceDesk_Url")%>>SD</option>
+            <option value=<%=CONFIG.getProperty("GAT_REPORTS_Url")%>>REPORTS</option>
+            <option value=<%=CONFIG.getProperty("GAT_SELF_Url")%>>SELF SERVICE</option></select>
         </p></form>
         <% }
         else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("QA")){ %>
@@ -132,7 +140,9 @@
             <option value="">Select one</option>
             <option value=<%=CONFIG.getProperty("QA_CP_Url")%>>JVS</option>
             <option value=<%=CONFIG.getProperty("QA_CATS_Url")%>>CATS</option>
-            <option value=<%=CONFIG.getProperty("QA_ServiceDesk_Url")%>>SD</option></select>
+            <option value=<%=CONFIG.getProperty("QA_ServiceDesk_Url")%>>SD</option>
+            <option value=<%=CONFIG.getProperty("QA_REPORTS_Url")%>>REPORTS</option>
+            <option value=<%=CONFIG.getProperty("QA_SELF_Url")%>>SELF SERVICE</option></select>
         </p></form>
         <% }
         else if (buildInfo.get(0).item(i).getAttributes().getNamedItem("name").getNodeValue().equals("UAT")){ %>
@@ -141,19 +151,21 @@
             <option value="">Select one</option>
             <option value=<%=CONFIG.getProperty("UAT_CP_Url")%>>JVS</option>
             <option value=<%=CONFIG.getProperty("UAT_CATS_Url")%>>CATS</option>
-            <option value=<%=CONFIG.getProperty("UAT_ServiceDesk_Url")%>>SD</option></select>
+            <option value=<%=CONFIG.getProperty("UAT_ServiceDesk_Url")%>>SD</option>
+            <option value=<%=CONFIG.getProperty("UAT_REPORTS_Url")%>>REPORTS</option>
+            <option value=<%=CONFIG.getProperty("UAT_SELF_Url")%>>SELF SERVICE</option></select>
         </p></form>
 
         <% } %>
-      </td>
-      <td>
-        <%= buildInfo.get(3).item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
         <%= buildInfo.get(1).item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
         <%= buildInfo.get(2).item(i).getFirstChild().getNodeValue()%>
+      </td>
+      <td>
+        <%= buildInfo.get(3).item(i).getFirstChild().getNodeValue()%>
       </td>
       <td>
 
