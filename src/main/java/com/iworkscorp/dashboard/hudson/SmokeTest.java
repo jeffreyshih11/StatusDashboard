@@ -226,7 +226,7 @@ public class SmokeTest extends TestBase {
             else{
                 return false;
             }
-            teardownClass();
+            //teardownClass();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -294,13 +294,13 @@ public class SmokeTest extends TestBase {
         try {
             if(loginToSDasOneEnv(env)) {
                 com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("statusPanelForm:eaiConfigLink"));
-                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:0:j_id_dc_toggler"));
+                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:0:j_id_dh_toggler"));
 
-                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:3:j_id_dc_toggler"));
-                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:2:j_id_dc_toggler"));
+                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:3:j_id_dh_toggler"));
+                com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndClick(By.id("majorTabPanel:eaiPropertyDataGridId:2:j_id_dh_toggler"));
                 WebElement empty = com.iworkscorp.dashboard.hudson.ReusableFunctions.waitUntilElementExistsAndFindBy(By.id("majorTabPanel:eaiPropertyDataGridId:3:propertiesIdTable:0:propertiesIdeaipropKey1"));
                 //System.out.print("SDf");
-                driver.close();
+                //driver.close();
                 return true;
             }
             return false;

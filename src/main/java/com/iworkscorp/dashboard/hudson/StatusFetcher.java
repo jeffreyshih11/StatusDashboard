@@ -53,7 +53,8 @@ public class StatusFetcher {
      */
     public void logOut(){
         driver.navigate().to(CONFIG.getProperty("baseURL") + "logout");
-        driver.close();
+        //driver.quit();
+        //driver.close();
     }
 
     public boolean collectFromHudson() throws Exception {
