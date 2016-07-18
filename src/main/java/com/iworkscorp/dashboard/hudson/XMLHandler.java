@@ -3,6 +3,8 @@ package com.iworkscorp.dashboard.hudson;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,10 +13,45 @@ import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class CreateXML {
+public class XMLHandler {
+
+    public static File environmentStatusFile;
+    public static File smokeStatusFile;
+    public static Document environmentStatusDoc;
+    public static Document smokeStatusDoc;
+
+    public XMLHandler(){
+
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = null;
+
+        try {
+            db = dbf.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+
+        environmentStatusFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\environmentStatus.xml");
+        try {
+            environmentStatusDoc = db.parse(environmentStatusFile);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        smokeStatusFile = new File(("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\smokeStatus.xml"));
+        try {
+            smokeStatusDoc = db.parse(smokeStatusFile);
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
    /* public static void main(String[] args) throws Exception {
         StatusFetcher statuses = new StatusFetcher();
@@ -22,7 +59,7 @@ public class CreateXML {
         statuses.initialize();
         if(statuses.collectFromHudson()) {
             ArrayList<Build> builds = statuses.getAllMostRecents();
-            CreateXML create = new CreateXML();
+            XMLHandler create = new XMLHandler();
             create.createXML(builds);
         }
 
@@ -140,5 +177,55 @@ public class CreateXML {
         node.appendChild(doc.createTextNode(value));
         return node;
     }
+
+
+    /**
+     * Reads the xml and puts all information into an ArrayList of nodelists
+     * @param doc
+     * @return
+     */
+    public static ArrayList<NodeList> readBuildXML(Document doc){
+
+        ArrayList<NodeList> buildInfoList = new ArrayList<>();
+        NodeList Environment = doc.getElementsByTagName("Environment");
+        NodeList Builder = doc.getElementsByTagName("Builder");
+        NodeList Date = doc.getElementsByTagName("Date");
+        NodeList Revision = doc.getElementsByTagName("Revision");
+        NodeList BuildStatus = doc.getElementsByTagName("BuildStatus");
+
+        buildInfoList.add(Environment);
+        buildInfoList.add(Builder);
+        buildInfoList.add(Date);
+        buildInfoList.add(Revision);
+        buildInfoList.add(BuildStatus);
+
+        return buildInfoList;
+
+    }
+
+
+    /**
+     * Creates arraylist of nodelists of data extracted
+     * from smoketest xml
+     * @param SmokeDoc
+     * @return
+     */
+    public static ArrayList<NodeList> readSmokeTestXML(Document SmokeDoc){
+        //File SmokeXmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\SmokeTest.xml");
+        //Document SmokeDoc = db.parse(doc);
+
+        ArrayList<NodeList> smokeTestInfo = new ArrayList<>();
+
+        NodeList SmokeEnvironment = SmokeDoc.getElementsByTagName("Environment");
+        NodeList SmokeRevision = SmokeDoc.getElementsByTagName("Revision");
+        NodeList SmokeStatus = SmokeDoc.getElementsByTagName("SmokeStatus");
+
+        smokeTestInfo.add(SmokeEnvironment);
+        smokeTestInfo.add(SmokeRevision);
+        smokeTestInfo.add(SmokeStatus);
+
+        return smokeTestInfo;
+    }
+
 
 }

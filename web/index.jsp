@@ -1,11 +1,11 @@
 <%@ page contentType="text/html; charset=utf-8" language="java"
-         import="org.w3c.dom.Document,org.w3c.dom.NodeList,javax.xml.parsers.DocumentBuilder" errorPage="" %>
+         import="com.iworkscorp.dashboard.hudson.Controller,org.w3c.dom.NodeList,javax.xml.parsers.DocumentBuilder" errorPage="" %>
 <%@ page import="javax.xml.parsers.DocumentBuilderFactory" %>
-<%@ page import="java.io.File" %>
 <%@ page import="java.io.FileInputStream" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Properties" %>
+<%@ page import="com.iworkscorp.dashboard.hudson.XMLHandler" %>
 
 <link rel="stylesheet" type="text/css" href="Style.css" title="gray">
 
@@ -32,28 +32,28 @@
   NodeList SmokeRevision = SmokeDoc.getElementsByTagName("SmokeRevision");
   NodeList SmokeStatus = SmokeDoc.getElementsByTagName("SmokeStatus");*/
 
-  com.iworkscorp.dashboard.hudson.Controller controller = new com.iworkscorp.dashboard.hudson.Controller();
+  XMLHandler xmlStuff = new XMLHandler();
 
   //build status doc
   DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   DocumentBuilder db = dbf.newDocumentBuilder();
   //File xmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\environmentStatus.xml");
   //Document environmentXML = controller.environmentStatusDoc;
-  ArrayList<NodeList> buildInfo = controller.readBuildXML(controller.environmentStatusDoc);
+  ArrayList<NodeList> buildInfo = xmlStuff.readBuildXML(xmlStuff.environmentStatusDoc);
 
 
   //smoke test status doc
 
   //File SmokeXmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\smokeStatus.xml");
   //Document SmokeDoc = controller.smokeStatusDoc;
-  ArrayList<NodeList> smokeStatus = controller.readSmokeTestXML(controller.smokeStatusDoc);
+  ArrayList<NodeList> smokeStatus = xmlStuff.readSmokeTestXML(xmlStuff.smokeStatusDoc);
 
   Properties CONFIG = null;
   final String CONFIG_PATH = "//src//main//resources//data//";
   CONFIG = new Properties();
   //FileInputStream fn = new FileInputStream(System.getProperty("user.dir") + CONFIG_PATH + "config.properties");
   //FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
-  FileInputStream fn = new FileInputStream("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
+  FileInputStream fn = new FileInputStream("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\src\\main\\resources\\config.properties");
   CONFIG.load(fn);
 
 %>
@@ -203,10 +203,10 @@
 
 <p></p>
 <center><p> Build Status last updated: <% SimpleDateFormat formattedDate = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-  out.print(formattedDate.format(controller.environmentStatusFile.lastModified()));
+  out.print(formattedDate.format(xmlStuff.environmentStatusFile.lastModified()));
 %></p></center>
 <center><p> Smoke Test last updated: <%
-  out.print(formattedDate.format(controller.smokeStatusFile.lastModified()));
+  out.print(formattedDate.format(xmlStuff.smokeStatusFile.lastModified()));
 %></p></center>
 <p></p>
 

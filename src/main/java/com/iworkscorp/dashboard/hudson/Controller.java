@@ -19,18 +19,18 @@ public class Controller {
 
     StatusFetcher statusFetcher;
     SmokeTest smokeTest;
-    CreateXML xmlCreator;
-    public static File environmentStatusFile;
+    XMLHandler xmlHandler;
+    /*public static File environmentStatusFile;
     public static File smokeStatusFile;
     public static Document environmentStatusDoc;
-    public static Document smokeStatusDoc;
+    public static Document xmlHandler.smokeStatusDoc;*/
     static ArrayList<individualSmokeTest> results;
     static ArrayList<Build> builds;
 
     static ArrayList<NodeList> buildInfo;
     static ArrayList<NodeList> smokeInfo;
 
-    static TestBase testBase;
+    TestBase testBase = new TestBase();
 
     /**
      * Gets the xmls to read from
@@ -38,7 +38,7 @@ public class Controller {
      */
     public Controller() {
         statusFetcher = new StatusFetcher();
-        xmlCreator = new CreateXML();
+        xmlHandler = new XMLHandler();
 
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = null;
@@ -48,43 +48,44 @@ public class Controller {
             e.printStackTrace();
         }
 
-        environmentStatusFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\environmentStatus.xml");
+        xmlHandler.environmentStatusFile = new File("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\environmentStatus.xml");
         try {
-            environmentStatusDoc = db.parse(environmentStatusFile);
+            xmlHandler.environmentStatusDoc = db.parse(xmlHandler.environmentStatusFile);
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        smokeStatusFile = new File(("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\smokeStatus.xml"));
+        xmlHandler.smokeStatusFile = new File(("C:\\Users\\jshih\\IdeaProjects\\StatusDashboard\\smokeStatus.xml"));
         try {
-            smokeStatusDoc = db.parse(smokeStatusFile);
+            xmlHandler.smokeStatusDoc = db.parse(xmlHandler.smokeStatusFile);
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        try {
+        /*try {
+            //testBase = new TestBase();
             testBase.initialize();
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }*/
         builds  = new ArrayList<>();
         results = new ArrayList<>();
-        buildInfo = readBuildXML(environmentStatusDoc);
-        smokeInfo = readSmokeTestXML(smokeStatusDoc);
+        buildInfo = xmlHandler.readBuildXML(xmlHandler.environmentStatusDoc);
+        smokeInfo = xmlHandler.readSmokeTestXML(xmlHandler.smokeStatusDoc);
 
     }
 
    /* public static void main(String[] args) throws Exception {
         Controller con = new Controller();
         //con.generateBuildInfo();
-        buildInfo = readBuildXML(environmentStatusDoc);
+        buildInfo = readBuildXML(xmlHandler.environmentStatusDoc);
 
         builds = con.createBuildsFromXMLNodes(buildInfo);
         //con.generateSmokeDoc();
-        smokeInfo = readSmokeTestXML(smokeStatusDoc);
+        smokeInfo = readSmokeTestXML(xmlHandler.smokeStatusDoc);
         results = con.createSmokeTestObjFromXML(smokeInfo);
 
         con.checkAndRunSmoke(builds.get(1), results.get(1));
@@ -106,10 +107,10 @@ public class Controller {
 
         if(statusFetcher.collectFromHudson()) {
             builds = statusFetcher.getAllMostRecents();
-            environmentStatusDoc = xmlCreator.createXML(builds);
-            xmlCreator.writeToXML(environmentStatusDoc, "\\environmentStatus.xml");
+            xmlHandler.environmentStatusDoc = xmlHandler.createXML(builds);
+            xmlHandler.writeToXML(xmlHandler.environmentStatusDoc, "\\environmentStatus.xml");
         }
-        return environmentStatusDoc;
+        return xmlHandler.environmentStatusDoc;
     }
 
 
@@ -118,7 +119,7 @@ public class Controller {
      * @param doc
      * @return
      */
-    public static ArrayList<NodeList> readBuildXML(Document doc){
+    /*public static ArrayList<NodeList> readBuildXML(Document doc){
 
         ArrayList<NodeList> buildInfoList = new ArrayList<>();
         NodeList Environment = doc.getElementsByTagName("Environment");
@@ -135,7 +136,7 @@ public class Controller {
 
         return buildInfoList;
 
-    }
+    }*/
 
 
     /**
@@ -160,7 +161,6 @@ public class Controller {
         //return tempBuilds;
     }
 
-
     /**
      * initializes smoke test xml with environment names
      * @return
@@ -169,10 +169,10 @@ public class Controller {
 
         results = createAllSmokeTestsandAdd();
         if(results.size() != 0) {
-            smokeStatusDoc = xmlCreator.createXML(results);
-            xmlCreator.writeToXML(smokeStatusDoc, "\\smokeStatus.xml");
+            xmlHandler.smokeStatusDoc = xmlHandler.createXML(results);
+            xmlHandler.writeToXML(xmlHandler.smokeStatusDoc, "\\smokeStatus.xml");
         }
-        return smokeStatusDoc;
+        return xmlHandler.smokeStatusDoc;
     }
 
 
@@ -183,8 +183,8 @@ public class Controller {
     public Document updateSmokeDoc(){
         Document smokeXML = null;
         if(results.size() != 0) {
-            smokeXML = xmlCreator.createXML(results);
-            xmlCreator.writeToXML(smokeXML, "\\smokeStatus.xml");
+            smokeXML = xmlHandler.createXML(results);
+            xmlHandler.writeToXML(smokeXML, "\\smokeStatus.xml");
         }
         return smokeXML;
     }
@@ -226,7 +226,7 @@ public class Controller {
      * @param SmokeDoc
      * @return
      */
-    public static ArrayList<NodeList> readSmokeTestXML(Document SmokeDoc){
+    /*public static ArrayList<NodeList> readSmokeTestXML(Document SmokeDoc){
         //File SmokeXmlFile = new File("C:\\Users\\mcrowley\\IdeaProjects\\StatusDashboard\\SmokeTest.xml");
         //Document SmokeDoc = db.parse(doc);
 
@@ -241,7 +241,7 @@ public class Controller {
         smokeTestInfo.add(SmokeStatus);
 
         return smokeTestInfo;
-    }
+    }*/
 
 
     /**
